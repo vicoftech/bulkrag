@@ -43,6 +43,13 @@ def parse_args():
         "--total", type=int, default=200, help="Total de archivos a procesar (default: 200)"
     )
     p.add_argument(
+        "--batches",
+        type=int,
+        default=1,
+        choices=[1, 2],
+        help="Cantidad de tandas ECS (default: 1; usar 2 solo para comparar batches grandes)",
+    )
+    p.add_argument(
         "--dry-run",
         action="store_true",
         help="Solo muestra keys y manifests, no lanza tasks",
@@ -167,8 +174,12 @@ def print_report(bucket: str, num_batches: int) -> None:
             print(f"  OK:         {summary['ok']}")
             print(f"  EMPTY_TEXT: {summary['empty_text']}")
             print(f"  ERRORS:     {summary['errors']}")
+            wall = summary.get("wall_time_sec", summary["total_sec"])
+            workers = summary.get("workers", 1)
+            print(f"  Workers:    {workers}")
+            print(f"  Wall time:  {wall}s")
             print(
-                f"  Tiempo:     {summary['total_sec']}s ({summary['avg_sec_file']}s/archivo)"
+                f"  CPU time:   {summary['total_sec']}s ({summary['avg_sec_file']}s/archivo)"
             )
             total_ok += summary["ok"]
             total_empty += summary["empty_text"]
@@ -200,11 +211,11 @@ def main():
         print("[ERROR] No se encontraron PDFs. Verificar bucket y prefix.")
         sys.exit(1)
 
-    mid = len(all_keys) // 2
-    if len(all_keys) <= 1:
-        batches = [all_keys]
-    else:
+    if args.batches == 2 and len(all_keys) > 1:
+        mid = len(all_keys) // 2
         batches = [all_keys[:mid], all_keys[mid:]]
+    else:
+        batches = [all_keys]
     print(
         f"[INIT] {len(all_keys)} archivos → "
         + ", ".join(f"tanda_{i + 1}={len(b)}" for i, b in enumerate(batches))

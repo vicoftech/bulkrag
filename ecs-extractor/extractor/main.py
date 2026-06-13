@@ -8,6 +8,7 @@ import json
 import os
 import time
 import traceback
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import boto3
 import pdfplumber
@@ -15,6 +16,7 @@ import pdfplumber
 BUCKET = os.environ["RAG_BUCKET_NAME"]
 MANIFEST_KEY = os.environ["MANIFEST_S3_KEY"]
 REGION = os.environ.get("AWS_REGION", "us-east-1")
+WORKER_COUNT = int(os.environ.get("WORKER_COUNT", os.cpu_count() or 1))
 
 s3 = boto3.client("s3", region_name=REGION)
 
@@ -25,16 +27,7 @@ def read_manifest() -> list[str]:
     return data["keys"]
 
 
-def extract_text(pdf_key: str) -> tuple[str, str]:
-    """
-    Retorna (texto, status) donde status es:
-      OK          → texto extraído correctamente
-      EMPTY_TEXT  → PDF sin texto digital (probable scan)
-      ERROR       → excepción durante extracción
-    """
-    obj = s3.get_object(Bucket=BUCKET, Key=pdf_key)
-    pdf_bytes = obj["Body"].read()
-
+def _extract_text_from_bytes(pdf_bytes: bytes) -> tuple[str, str]:
     with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
         pages_text = []
         for page in pdf.pages:
@@ -48,34 +41,61 @@ def extract_text(pdf_key: str) -> tuple[str, str]:
     return full_text, "OK"
 
 
-def write_output(pdf_key: str, text: str) -> None:
-    output_key = f"batch-poc/output/{pdf_key}.txt"
-    s3.put_object(
-        Bucket=BUCKET,
-        Key=output_key,
-        Body=text.encode("utf-8"),
-        ContentType="text/plain",
-    )
+def _process_pdf(bucket: str, region: str, pdf_key: str) -> dict:
+    """Procesa un PDF de punta a punta en un worker (download → extract → upload)."""
+    worker_s3 = boto3.client("s3", region_name=region)
+    t0 = time.time()
+
+    try:
+        obj = worker_s3.get_object(Bucket=bucket, Key=pdf_key)
+        pdf_bytes = obj["Body"].read()
+        text, status = _extract_text_from_bytes(pdf_bytes)
+
+        if status == "OK":
+            worker_s3.put_object(
+                Bucket=bucket,
+                Key=f"batch-poc/output/{pdf_key}.txt",
+                Body=text.encode("utf-8"),
+                ContentType="text/plain",
+            )
+
+        duration = round(time.time() - t0, 2)
+        worker_s3.put_object(
+            Bucket=bucket,
+            Key=f"batch-poc/logs/{pdf_key}.json",
+            Body=json.dumps(
+                {
+                    "key": pdf_key,
+                    "status": status,
+                    "duration_sec": duration,
+                    "error": "",
+                }
+            ).encode("utf-8"),
+            ContentType="application/json",
+        )
+        return {"key": pdf_key, "status": status, "duration_sec": duration}
+    except Exception:
+        duration = round(time.time() - t0, 2)
+        err_msg = traceback.format_exc()
+        worker_s3.put_object(
+            Bucket=bucket,
+            Key=f"batch-poc/logs/{pdf_key}.json",
+            Body=json.dumps(
+                {
+                    "key": pdf_key,
+                    "status": "ERROR",
+                    "duration_sec": duration,
+                    "error": err_msg[:500],
+                }
+            ).encode("utf-8"),
+            ContentType="application/json",
+        )
+        return {"key": pdf_key, "status": "ERROR", "duration_sec": duration}
 
 
-def write_log(pdf_key: str, status: str, duration_sec: float, error: str = "") -> None:
-    log_key = f"batch-poc/logs/{pdf_key}.json"
-    s3.put_object(
-        Bucket=BUCKET,
-        Key=log_key,
-        Body=json.dumps(
-            {
-                "key": pdf_key,
-                "status": status,
-                "duration_sec": round(duration_sec, 2),
-                "error": error,
-            }
-        ).encode("utf-8"),
-        ContentType="application/json",
-    )
-
-
-def write_summary(manifest_key: str, results: list[dict]) -> None:
+def write_summary(
+    manifest_key: str, results: list[dict], wall_time_sec: float, workers: int
+) -> None:
     base = manifest_key.split("/")[-1].replace(".json", "")
     summary_key = f"batch-poc/results/{base}_summary.json"
 
@@ -94,6 +114,8 @@ def write_summary(manifest_key: str, results: list[dict]) -> None:
                 "ok": ok_count,
                 "empty_text": empty_count,
                 "errors": error_count,
+                "workers": workers,
+                "wall_time_sec": round(wall_time_sec, 2),
                 "total_sec": round(total_sec, 2),
                 "avg_sec_file": round(total_sec / len(results), 2) if results else 0,
                 "results": results,
@@ -104,40 +126,39 @@ def write_summary(manifest_key: str, results: list[dict]) -> None:
     )
     print(
         f"[SUMMARY] OK={ok_count} EMPTY={empty_count} ERROR={error_count} "
-        f"total_time={round(total_sec, 1)}s summary_key={summary_key}"
+        f"wall_time={round(wall_time_sec, 1)}s workers={workers} "
+        f"summary_key={summary_key}"
     )
 
 
 def main():
-    print(f"[START] manifest={MANIFEST_KEY} bucket={BUCKET}")
     keys = read_manifest()
+    workers = max(1, min(WORKER_COUNT, len(keys)))
+    print(
+        f"[START] manifest={MANIFEST_KEY} bucket={BUCKET} "
+        f"files={len(keys)} workers={workers}"
+    )
+
     results = []
+    t0 = time.time()
 
-    for i, key in enumerate(keys, 1):
-        t0 = time.time()
-        try:
-            text, status = extract_text(key)
-            if status == "OK":
-                write_output(key, text)
-            write_log(key, status, time.time() - t0)
-            results.append(
-                {
-                    "key": key,
-                    "status": status,
-                    "duration_sec": round(time.time() - t0, 2),
-                }
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        futures = {
+            executor.submit(_process_pdf, BUCKET, REGION, key): key for key in keys
+        }
+        done = 0
+        for future in as_completed(futures):
+            done += 1
+            result = future.result()
+            results.append(result)
+            print(
+                f"[{done}/{len(keys)}] {result['status']} {result['key']} "
+                f"({result['duration_sec']}s)"
             )
-            print(f"[{i}/{len(keys)}] {status} {key} ({round(time.time() - t0, 2)}s)")
-        except Exception as e:
-            duration = time.time() - t0
-            err_msg = traceback.format_exc()
-            write_log(key, "ERROR", duration, error=err_msg[:500])
-            results.append(
-                {"key": key, "status": "ERROR", "duration_sec": round(duration, 2)}
-            )
-            print(f"[{i}/{len(keys)}] ERROR {key}: {e}")
 
-    write_summary(MANIFEST_KEY, results)
+    wall_time_sec = time.time() - t0
+    results.sort(key=lambda r: keys.index(r["key"]))
+    write_summary(MANIFEST_KEY, results, wall_time_sec, workers)
     print("[END]")
 
 

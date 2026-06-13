@@ -105,7 +105,8 @@ resource "aws_ecs_task_definition" "extractor" {
     essential = true
     environment = [
       { name = "RAG_BUCKET_NAME", value = var.rag_bucket_name },
-      { name = "AWS_REGION", value = var.aws_region }
+      { name = "AWS_REGION", value = var.aws_region },
+      { name = "WORKER_COUNT", value = tostring(var.worker_count) }
     ]
     logConfiguration = {
       logDriver = "awslogs"

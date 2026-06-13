@@ -3,3 +3,6 @@
 # rag_bucket_name = "rag-agents-prod"
 # vpc_id          = "vpc-xxxxxxxx"
 # subnet_ids      = ["subnet-abc123", "subnet-def456"]
+# task_cpu        = 4096   # 4 vCPU — 1 worker por vCPU
+# task_memory     = 8192   # 8 GB — ~2 GB por worker para PDFs grandes (~100 MB)
+# worker_count    = 4      # PDFs en paralelo por task

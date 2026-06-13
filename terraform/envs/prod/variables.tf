@@ -23,12 +23,17 @@ variable "ecr_repository_name" {
 
 variable "task_cpu" {
   type    = number
-  default = 1024
+  default = 4096
 }
 
 variable "task_memory" {
   type    = number
-  default = 2048
+  default = 8192
+}
+
+variable "worker_count" {
+  type    = number
+  default = 4
 }
 
 variable "vpc_id" {
