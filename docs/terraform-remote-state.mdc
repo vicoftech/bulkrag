@@ -1,0 +1,511 @@
+---
+description: Bootstrap del backend remoto de Terraform (S3 + DynamoDB) para bulkrag en cuenta asap_dev. Cubre módulo bootstrap con estado local, convención de keys por entorno, configuración backend en envs, permisos OIDC y checklist de migración desde state local.
+globs:
+  - "terraform/bootstrap/**"
+  - "terraform/envs/**/backend.tf"
+  - "docs/terraform-remote-state*.md"
+alwaysApply: false
+---
+
+# Spec — Terraform Remote State (bulkrag)
+
+## Objetivo
+
+Provisionar y documentar el **backend remoto** de Terraform para el proyecto bulkrag en la cuenta **asap_dev** (`615216531593`), de forma que:
+
+1. El state quede centralizado en S3 con versionado y cifrado
+2. Los `apply` concurrentes (local + GitHub Actions) usen lock en DynamoDB
+3. Cada entorno (`dev`, `prod`) tenga su propia key de state
+4. El bootstrap se ejecute **una sola vez** con estado local (chicken-and-egg)
+
+**Criterio de éxito:**
+- `terraform init` en `terraform/envs/dev` conecta al backend S3 sin errores
+- `terraform plan` adquiere y libera lock en DynamoDB
+- GitHub Actions puede leer/escribir state con el rol OIDC existente
+- Ningún `terraform.tfstate` local queda como fuente de verdad
+
+---
+
+## Estrategia de naming — dos opciones
+
+### Opción A — Bucket compartido rag-agents (recomendada si ya existe)
+
+Reutilizar infraestructura ya desplegada en asap_dev:
+
+| Recurso | Valor |
+|---------|-------|
+| Bucket S3 | `rag-agents-terraform-state-615216531593` |
+| Tabla DynamoDB | `rag-agents-terraform-locks` |
+| Key dev | `bulkrag/ecs-extractor/dev/terraform.tfstate` |
+| Key prod | `bulkrag/ecs-extractor/prod/terraform.tfstate` |
+
+**Ventaja:** cero recursos nuevos; el OIDC role ya tiene permisos sobre ese bucket/tabla.
+
+**Cuándo usar:** cuenta 615216531593, proyecto bulkrag como submódulo del ecosistema rag-agents.
+
+### Opción B — Bucket dedicado bulkrag (bootstrap nuevo)
+
+Crear bucket y tabla propios del proyecto:
+
+| Recurso | Valor |
+|---------|-------|
+| Bucket S3 | `bulkrag-terraform-state-615216531593` |
+| Tabla DynamoDB | `bulkrag-terraform-locks` |
+| Key dev | `ecs-extractor/dev/terraform.tfstate` |
+| Key prod | `ecs-extractor/prod/terraform.tfstate` |
+
+**Ventaja:** aislamiento total; lifecycle y permisos independientes.
+
+**Cuándo usar:** cuenta nueva, política de "un bucket por proyecto", o desacople de rag-agents.
+
+> **Estado actual del repo:** ya usa Opción A (`terraform/envs/dev/backend.tf`). Esta spec documenta ambas rutas; ejecutar bootstrap solo si elegís Opción B o si el bucket compartido no existe aún.
+
+---
+
+## Estructura de archivos
+
+```
+bulkrag/
+├── terraform/
+│   ├── bootstrap/                    ← ejecutar UNA vez (state local)
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   │   ├── terraform.tfvars.example
+│   │   └── .gitignore
+│   └── envs/
+│       ├── dev/
+│       │   └── backend.tf            ← apunta al bucket/key
+│       └── prod/
+│           └── backend.tf
+└── docs/
+    └── terraform-remote-state.md     ← resumen operativo (opcional)
+```
+
+---
+
+## Fase 1 — Módulo bootstrap (`terraform/bootstrap/`)
+
+> Usa **estado local**. No commitear `terraform.tfstate` ni `.terraform/` de esta carpeta.
+
+### `variables.tf`
+
+```hcl
+variable "aws_region" {
+  type        = string
+  description = "Región AWS"
+  default     = "us-east-1"
+}
+
+variable "aws_profile" {
+  type        = string
+  description = "Perfil AWS CLI para apply local (vacío = cadena por defecto)"
+  default     = "asap_dev"
+}
+
+variable "project_name" {
+  type        = string
+  description = "Nombre del proyecto (tags y naming)"
+  default     = "bulkrag"
+}
+
+variable "state_bucket_name" {
+  type        = string
+  description = "Nombre globalmente único del bucket de estado"
+  default     = ""  # vacío → bulkrag-terraform-state-<account_id>
+}
+
+variable "lock_table_name" {
+  type        = string
+  description = "Tabla DynamoDB para bloqueo de estado"
+  default     = "bulkrag-terraform-locks"
+}
+```
+
+### `main.tf`
+
+```hcl
+# Bootstrap del backend remoto (S3 + DynamoDB). Estado local únicamente.
+# Ejecutar una vez antes de configurar backend en terraform/envs/*.
+
+terraform {
+  required_version = ">= 1.8.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+provider "aws" {
+  region  = var.aws_region
+  profile = var.aws_profile != "" ? var.aws_profile : null
+}
+
+data "aws_caller_identity" "current" {}
+
+locals {
+  state_bucket_name = var.state_bucket_name != "" ? var.state_bucket_name : "bulkrag-terraform-state-${data.aws_caller_identity.current.account_id}"
+}
+
+resource "aws_s3_bucket" "tfstate" {
+  bucket = local.state_bucket_name
+
+  tags = {
+    Project     = var.project_name
+    Purpose     = "terraform-state"
+    Environment = "shared"
+    ManagedBy   = "terraform-bootstrap"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_versioning" "tfstate" {
+  bucket = aws_s3_bucket.tfstate.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tfstate" {
+  bucket = aws_s3_bucket.tfstate.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+    bucket_key_enabled = true
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "tfstate" {
+  bucket = aws_s3_bucket.tfstate.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_dynamodb_table" "tf_locks" {
+  name         = var.lock_table_name
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+
+  tags = {
+    Project     = var.project_name
+    Purpose     = "terraform-locks"
+    Environment = "shared"
+    ManagedBy   = "terraform-bootstrap"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+```
+
+### `outputs.tf`
+
+```hcl
+output "state_bucket_name" {
+  value       = aws_s3_bucket.tfstate.id
+  description = "Bucket para terraform backend"
+}
+
+output "lock_table_name" {
+  value       = aws_dynamodb_table.tf_locks.name
+  description = "Tabla DynamoDB para locks"
+}
+
+output "aws_account_id" {
+  value = data.aws_caller_identity.current.account_id
+}
+
+output "backend_hcl_dev" {
+  description = "Snippet para terraform/envs/dev/backend.tf"
+  value = <<-EOT
+    terraform {
+      backend "s3" {
+        bucket         = "${aws_s3_bucket.tfstate.id}"
+        key            = "ecs-extractor/dev/terraform.tfstate"
+        region         = "${var.aws_region}"
+        dynamodb_table = "${aws_dynamodb_table.tf_locks.name}"
+        encrypt        = true
+      }
+    }
+  EOT
+}
+
+output "backend_hcl_prod" {
+  description = "Snippet para terraform/envs/prod/backend.tf"
+  value = <<-EOT
+    terraform {
+      backend "s3" {
+        bucket         = "${aws_s3_bucket.tfstate.id}"
+        key            = "ecs-extractor/prod/terraform.tfstate"
+        region         = "${var.aws_region}"
+        dynamodb_table = "${aws_dynamodb_table.tf_locks.name}"
+        encrypt        = true
+      }
+    }
+  EOT
+}
+```
+
+### `terraform.tfvars.example`
+
+```hcl
+aws_region        = "us-east-1"
+aws_profile       = "asap_dev"
+project_name      = "bulkrag"
+# state_bucket_name = "bulkrag-terraform-state-615216531593"  # opcional; vacío = auto
+lock_table_name   = "bulkrag-terraform-locks"
+```
+
+### `.gitignore` (bootstrap)
+
+```
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfvars
+```
+
+---
+
+## Fase 2 — Backend por entorno (`terraform/envs/*/backend.tf`)
+
+### Opción A — bucket compartido rag-agents (config actual)
+
+**`terraform/envs/dev/backend.tf`**
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket         = "rag-agents-terraform-state-615216531593"
+    key            = "bulkrag/ecs-extractor/dev/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "rag-agents-terraform-locks"
+    encrypt        = true
+  }
+}
+```
+
+**`terraform/envs/prod/backend.tf`**
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket         = "rag-agents-terraform-state-615216531593"
+    key            = "bulkrag/ecs-extractor/prod/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "rag-agents-terraform-locks"
+    encrypt        = true
+  }
+}
+```
+
+### Opción B — bucket dedicado (post-bootstrap)
+
+Reemplazar `bucket` y `dynamodb_table` con los outputs de `terraform/bootstrap`:
+
+```hcl
+bucket         = "bulkrag-terraform-state-615216531593"
+dynamodb_table = "bulkrag-terraform-locks"
+key            = "ecs-extractor/dev/terraform.tfstate"   # o prod
+```
+
+---
+
+## Fase 3 — Convención de keys en S3
+
+```
+s3://<bucket>/
+├── bulkrag/                          # prefijo proyecto (Opción A)
+│   └── ecs-extractor/
+│       ├── dev/terraform.tfstate
+│       └── prod/terraform.tfstate
+└── rag-agents/                       # otros proyectos en bucket compartido
+    └── terraform.tfstate
+```
+
+Reglas:
+- **Una key por stack/entorno** — nunca compartir key entre dev y prod
+- **Prefijo por proyecto** cuando el bucket es compartido (`bulkrag/...`)
+- **Sin workspaces** para entornos distintos — preferir keys separadas (más explícito en CI)
+
+---
+
+## Fase 4 — Permisos IAM (OIDC GitHub Actions)
+
+El rol `rag-github-actions-ecs-extractor-dev` ya incluye permisos sobre el bucket compartido. Si usás Opción B, actualizar `terraform/modules/github_oidc` o las variables del env:
+
+```hcl
+terraform_state_bucket     = "bulkrag-terraform-state-615216531593"
+terraform_state_lock_table = "bulkrag-terraform-locks"
+```
+
+Statement mínimo requerido en la policy del rol OIDC:
+
+```hcl
+# S3 state
+Action   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"]
+Resource = ["arn:aws:s3:::BUCKET", "arn:aws:s3:::BUCKET/*"]
+
+# DynamoDB lock
+Action   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:DeleteItem", "dynamodb:DescribeTable"]
+Resource = ["arn:aws:dynamodb:REGION:ACCOUNT:table/TABLE"]
+```
+
+---
+
+## Fase 5 — Comandos de ejecución
+
+### 5.1 Bootstrap (solo Opción B o si el bucket no existe)
+
+```bash
+cd terraform/bootstrap
+cp terraform.tfvars.example terraform.tfvars
+# Editar si hace falta
+
+AWS_PROFILE=asap_dev terraform init
+AWS_PROFILE=asap_dev terraform plan
+AWS_PROFILE=asap_dev terraform apply
+
+# Copiar outputs
+AWS_PROFILE=asap_dev terraform output backend_hcl_dev
+AWS_PROFILE=asap_dev terraform output backend_hcl_prod
+```
+
+### 5.2 Verificar bucket compartido existente (Opción A)
+
+```bash
+AWS_PROFILE=asap_dev aws s3api head-bucket \
+  --bucket rag-agents-terraform-state-615216531593
+
+AWS_PROFILE=asap_dev aws dynamodb describe-table \
+  --table-name rag-agents-terraform-locks \
+  --region us-east-1
+```
+
+Si ambos existen → saltar bootstrap, ir directo a 5.3.
+
+### 5.3 Conectar env dev al backend remoto
+
+```bash
+cd terraform/envs/dev
+
+# Primera vez o cambio de backend
+AWS_PROFILE=asap_dev terraform init
+
+# Verificar lock
+AWS_PROFILE=asap_dev terraform plan
+```
+
+### 5.4 Migrar state local → remoto (si ya tenías apply local)
+
+```bash
+cd terraform/envs/dev
+
+# Si existe terraform.tfstate local sin backend configurado:
+AWS_PROFILE=asap_dev terraform init -migrate-state
+
+# Confirmar con "yes" cuando pregunte
+AWS_PROFILE=asap_dev terraform plan   # debe mostrar "No changes"
+```
+
+### 5.5 Inicializar prod (cuando corresponda)
+
+```bash
+cd terraform/envs/prod
+AWS_PROFILE=asap_dev terraform init
+AWS_PROFILE=asap_dev terraform plan -var-file=... 
+```
+
+---
+
+## Fase 6 — GitHub: keys y values
+
+### Secrets (environment `development`)
+
+| Key | Value (Opción A — actual) | Value (Opción B) |
+|-----|---------------------------|------------------|
+| `AWS_DEPLOY_ROLE_ARN` | `arn:aws:iam::615216531593:role/rag-github-actions-ecs-extractor-dev` | *(mismo; actualizar policy si bucket nuevo)* |
+
+### Variables en `DEV_TFVARS` / `terraform.tfvars.github`
+
+| Key | Value (Opción A) | Value (Opción B) |
+|-----|------------------|------------------|
+| `terraform_state_bucket` | `rag-agents-terraform-state-615216531593` | `bulkrag-terraform-state-615216531593` |
+| `terraform_state_lock_table` | `rag-agents-terraform-locks` | `bulkrag-terraform-locks` |
+
+---
+
+## Checklist de validación
+
+### Pre-bootstrap
+- [ ] Perfil `asap_dev` configurado y con permisos S3 + DynamoDB + IAM
+- [ ] Decisión documentada: Opción A (compartido) u Opción B (dedicado)
+- [ ] Si Opción A: bucket y tabla existen (`head-bucket` + `describe-table`)
+
+### Bootstrap (Opción B)
+- [ ] `terraform apply` en `terraform/bootstrap/` exitoso
+- [ ] Bucket con versionado Enabled y SSE AES256
+- [ ] Tabla DynamoDB con hash key `LockID`
+- [ ] `prevent_destroy = true` en bucket y tabla
+
+### Post-configuración
+- [ ] `backend.tf` creado en `terraform/envs/dev` (y prod)
+- [ ] `terraform init` sin errores
+- [ ] `terraform plan` adquiere lock (mensaje "Acquiring state lock")
+- [ ] State visible en S3: `aws s3 ls s3://BUCKET/bulkrag/ --recursive`
+- [ ] GitHub Actions workflow corre `terraform init` + `plan` sin AccessDenied
+- [ ] No hay `terraform.tfstate` commiteado en el repo (verificar `.gitignore`)
+
+### Seguridad
+- [ ] Bucket con `public_access_block` en los 4 flags
+- [ ] State cifrado (`encrypt = true` en backend)
+- [ ] Versionado habilitado (rollback de state corrupto)
+- [ ] Permisos OIDC limitados al bucket/tabla del proyecto
+
+---
+
+## Troubleshooting
+
+| Error | Causa | Solución |
+|-------|-------|----------|
+| `Error loading state: AccessDenied` | Rol/usuario sin permiso S3 | Agregar statement en OIDC policy o IAM user |
+| `Error acquiring state lock` | Lock huérfano tras crash | `terraform force-unlock LOCK_ID` (con cuidado) |
+| `Backend configuration changed` | Cambio de bucket/key | `terraform init -reconfigure` o `-migrate-state` |
+| `Bucket already exists` | Bootstrap duplicado | Usar Opción A o importar bucket existente |
+| `ConditionalCheckFailedException` | Dos applies simultáneos | Normal; esperar que termine el otro job |
+
+---
+
+## Costo estimado
+
+| Recurso | Costo mensual aprox. |
+|---------|---------------------|
+| S3 state (< 1 MB, pocas versiones) | < USD 0.01 |
+| DynamoDB on-demand (locks esporádicos) | < USD 0.01 |
+| **Total** | **< USD 0.05** |
+
+---
+
+## Relación con otros specs
+
+- **rag-ecs-extractor-poc.mdc** — consume este backend en `terraform/envs/dev`
+- **docs/github-secrets-dev.md** — secrets OIDC que incluyen `terraform_state_bucket` y `terraform_state_lock_table`
+- **rag-agents/terraform/bootstrap/** — bootstrap original del bucket compartido (Opción A)

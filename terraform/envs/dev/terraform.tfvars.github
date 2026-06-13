@@ -1,0 +1,10 @@
+environment                = "dev"
+aws_account_id             = "615216531593"
+aws_region                 = "us-east-1"
+rag_bucket_name            = "rag-documents-dev-615216531593"
+vpc_id                     = "vpc-032f6456c496846a0"
+subnet_ids                 = ["subnet-05adff7c61ea0ac0a", "subnet-06e71711cc39c6112"]
+github_repository          = "vicoftech/bulkrag"
+github_actions_environment = "development"
+terraform_state_bucket     = "bulkrag-terraform-state-615216531593"
+terraform_state_lock_table = "bulkrag-terraform-locks"

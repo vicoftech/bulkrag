@@ -1,0 +1,5 @@
+aws_region      = "us-east-1"
+aws_profile     = "asap_dev"
+project_name    = "bulkrag"
+# state_bucket_name = "bulkrag-terraform-state-615216531593"
+lock_table_name = "bulkrag-terraform-locks"

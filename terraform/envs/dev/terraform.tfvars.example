@@ -1,0 +1,5 @@
+# Copy to terraform.tfvars and fill in your AWS values.
+# aws_account_id  = "123456789012"
+# rag_bucket_name = "rag-agents-prod"
+# vpc_id          = "vpc-xxxxxxxx"
+# subnet_ids      = ["subnet-abc123", "subnet-def456"]

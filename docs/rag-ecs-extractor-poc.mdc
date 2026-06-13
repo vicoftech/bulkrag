@@ -1,0 +1,905 @@
+---
+description: POC de extracción masiva de texto desde PDFs usando ECS Fargate Spot con pdfplumber. Valida throughput, calidad de extracción y costo antes de encarar la implementación completa para 130K archivos de BORA/ANMAT. Cubre infraestructura Terraform, código Python del container, CI/CD GitHub Actions y script de ejecución de tandas.
+globs:
+  - "ecs-extractor/**"
+  - "terraform/modules/ecs_extractor/**"
+  - ".github/workflows/ecs-extractor*.yml"
+alwaysApply: false
+---
+
+# POC — ECS pdfplumber Extractor
+
+## Objetivo del POC
+
+Validar en condiciones reales que:
+
+1. pdfplumber extrae texto con calidad suficiente de los PDFs de BORA/ANMAT
+2. El throughput de ECS Fargate Spot es predecible y acotable en tiempo
+3. El costo por archivo es inferior a Textract para volúmenes masivos
+4. El flujo S3 input → ECS → S3 output es estable con 200 archivos
+
+**Criterio de éxito:**
+- Tanda 1 (100 archivos): completa sin errores en < 30 minutos
+- Tanda 2 (100 archivos): misma estabilidad, sin necesidad de intervención manual
+- Ratio de extracción exitosa > 90% (PDFs con texto digital; los scaneados se loguean como `EMPTY_TEXT`)
+- Costo total del POC < USD 5
+
+---
+
+## Estructura de archivos
+
+```
+rag-agents/
+├── ecs-extractor/
+│   ├── extractor/
+│   │   ├── main.py              ← lógica principal del container
+│   │   ├── requirements.txt
+│   │   └── Dockerfile
+│   └── scripts/
+│       └── run_poc_batches.py   ← script de ejecución de tandas
+└── terraform/
+    └── modules/
+        └── ecs_extractor/       ← módulo Terraform del POC
+            ├── main.tf
+            ├── variables.tf
+            └── outputs.tf
+.github/
+└── workflows/
+    └── ecs-extractor-poc.yml    ← CI/CD GitHub Actions
+```
+
+---
+
+## Componentes del sistema
+
+```
+[Script run_poc_batches.py]
+  → lee 200 keys del bucket S3 existente (rag-agents)
+  → divide en tanda_1 (keys 0..99) y tanda_2 (keys 100..199)
+  → escribe manifest JSONs en S3: batch-poc/manifests/tanda_{1,2}.json
+  → lanza ECS Task para tanda_1
+  → espera finalización → lanza tanda_2
+  → imprime reporte final (archivos OK / EMPTY_TEXT / ERROR)
+
+[ECS Fargate Spot Task]
+  → lee manifest JSON desde S3 (lista de keys)
+  → por cada key:
+      descarga PDF de S3
+      extrae texto con pdfplumber
+      si texto vacío → marca como EMPTY_TEXT
+      escribe resultado en S3: batch-poc/output/{key}.txt
+      escribe log en S3: batch-poc/logs/{key}.json
+  → al finalizar escribe resumen: batch-poc/results/tanda_{N}_summary.json
+```
+
+---
+
+## Fase 1 — Infraestructura Terraform
+
+### Módulo `terraform/modules/ecs_extractor/`
+
+**`variables.tf`**
+```hcl
+variable "environment"          { type = string }
+variable "aws_account_id"       { type = string }
+variable "aws_region"           { type = string  default = "us-east-1" }
+variable "rag_bucket_name"      { type = string  description = "Bucket S3 existente del proyecto rag-agents" }
+variable "ecr_repository_name"  { type = string  default = "rag-ecs-extractor" }
+variable "task_cpu"             { type = number  default = 4096 }  # 4 vCPU
+variable "task_memory"          { type = number  default = 8192 }  # 8 GB
+variable "vpc_id"               { type = string }
+variable "subnet_ids"           { type = list(string) }
+```
+
+**`main.tf`**
+```hcl
+# ── ECR ──────────────────────────────────────────────────────────────────────
+resource "aws_ecr_repository" "extractor" {
+  name                 = var.ecr_repository_name
+  image_tag_mutability = "MUTABLE"
+  force_delete         = true  # POC: destruible sin residuos
+
+  image_scanning_configuration { scan_on_push = true }
+}
+
+resource "aws_ecr_lifecycle_policy" "extractor" {
+  repository = aws_ecr_repository.extractor.name
+  policy = jsonencode({
+    rules = [{
+      rulePriority = 1
+      description  = "Retener solo las últimas 5 imágenes"
+      selection    = { tagStatus = "any", countType = "imageCountMoreThan", countNumber = 5 }
+      action       = { type = "expire" }
+    }]
+  })
+}
+
+# ── ECS Cluster ──────────────────────────────────────────────────────────────
+resource "aws_ecs_cluster" "extractor" {
+  name = "rag-extractor-poc-${var.environment}"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+}
+
+# ── IAM Role para la Task ─────────────────────────────────────────────────────
+resource "aws_iam_role" "ecs_task_execution" {
+  name = "rag-ecs-extractor-execution-role-${var.environment}"
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "ecs-tasks.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_execution_managed" {
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role" "ecs_task" {
+  name = "rag-ecs-extractor-task-role-${var.environment}"
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "ecs-tasks.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "ecs_task_s3" {
+  name = "rag-ecs-extractor-s3-policy"
+  role = aws_iam_role.ecs_task.id
+  policy = jsonencode({
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = ["s3:GetObject", "s3:PutObject", "s3:ListBucket"]
+        Resource = [
+          "arn:aws:s3:::${var.rag_bucket_name}",
+          "arn:aws:s3:::${var.rag_bucket_name}/*"
+        ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# ── CloudWatch Log Group ──────────────────────────────────────────────────────
+resource "aws_cloudwatch_log_group" "extractor" {
+  name              = "/ecs/rag-extractor-poc-${var.environment}"
+  retention_in_days = 7  # POC: retención mínima
+}
+
+# ── Task Definition ───────────────────────────────────────────────────────────
+resource "aws_ecs_task_definition" "extractor" {
+  family                   = "rag-extractor-poc-${var.environment}"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = var.task_cpu
+  memory                   = var.task_memory
+  execution_role_arn       = aws_iam_role.ecs_task_execution.arn
+  task_role_arn            = aws_iam_role.ecs_task.arn
+
+  container_definitions = jsonencode([{
+    name      = "extractor"
+    image     = "${aws_ecr_repository.extractor.repository_url}:latest"
+    essential = true
+    environment = [
+      { name = "RAG_BUCKET_NAME", value = var.rag_bucket_name },
+      { name = "AWS_REGION",      value = var.aws_region }
+    ]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = aws_cloudwatch_log_group.extractor.name
+        "awslogs-region"        = var.aws_region
+        "awslogs-stream-prefix" = "ecs"
+      }
+    }
+    # El manifest key se pasa como override en run_task, no como env fija
+  }])
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+}
+
+# ── Security Group para la Task ───────────────────────────────────────────────
+resource "aws_security_group" "ecs_task" {
+  name        = "rag-ecs-extractor-sg-${var.environment}"
+  description = "ECS extractor POC — egress only"
+  vpc_id      = var.vpc_id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+```
+
+**`outputs.tf`**
+```hcl
+output "ecr_repository_url"    { value = aws_ecr_repository.extractor.repository_url }
+output "ecs_cluster_arn"       { value = aws_ecs_cluster.extractor.arn }
+output "ecs_cluster_name"      { value = aws_ecs_cluster.extractor.name }
+output "task_definition_arn"   { value = aws_ecs_task_definition.extractor.arn }
+output "task_definition_family"{ value = aws_ecs_task_definition.extractor.family }
+output "security_group_id"     { value = aws_security_group.ecs_task.id }
+output "subnet_ids"            { value = var.subnet_ids }
+```
+
+---
+
+## Fase 2 — Container Python
+
+### `ecs-extractor/extractor/requirements.txt`
+```
+pdfplumber==0.11.4
+boto3==1.34.0
+```
+
+### `ecs-extractor/extractor/main.py`
+```python
+"""
+RAG ECS Extractor — POC
+Recibe: MANIFEST_S3_KEY (env var) → lista de S3 keys de PDFs
+Produce: texto extraído en batch-poc/output/ y logs en batch-poc/logs/
+"""
+import os, json, time, traceback, io
+import boto3
+import pdfplumber
+
+BUCKET       = os.environ["RAG_BUCKET_NAME"]
+MANIFEST_KEY = os.environ["MANIFEST_S3_KEY"]  # pasado como override al lanzar la task
+REGION       = os.environ.get("AWS_REGION", "us-east-1")
+
+s3 = boto3.client("s3", region_name=REGION)
+
+
+def read_manifest() -> list[str]:
+    obj = s3.get_object(Bucket=BUCKET, Key=MANIFEST_KEY)
+    data = json.loads(obj["Body"].read())
+    return data["keys"]
+
+
+def extract_text(pdf_key: str) -> tuple[str, str]:
+    """
+    Retorna (texto, status) donde status es:
+      OK          → texto extraído correctamente
+      EMPTY_TEXT  → PDF sin texto digital (probable scan)
+      ERROR       → excepción durante extracción
+    """
+    obj = s3.get_object(Bucket=BUCKET, Key=pdf_key)
+    pdf_bytes = obj["Body"].read()
+
+    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+        pages_text = []
+        for page in pdf.pages:
+            text = page.extract_text()
+            if text:
+                pages_text.append(text.strip())
+        full_text = "\n\n".join(pages_text)
+
+    if not full_text.strip():
+        return "", "EMPTY_TEXT"
+    return full_text, "OK"
+
+
+def write_output(pdf_key: str, text: str) -> None:
+    # Preserva estructura de carpetas del key original
+    output_key = f"batch-poc/output/{pdf_key}.txt"
+    s3.put_object(
+        Bucket=BUCKET,
+        Key=output_key,
+        Body=text.encode("utf-8"),
+        ContentType="text/plain"
+    )
+
+
+def write_log(pdf_key: str, status: str, duration_sec: float, error: str = "") -> None:
+    log_key = f"batch-poc/logs/{pdf_key}.json"
+    s3.put_object(
+        Bucket=BUCKET,
+        Key=log_key,
+        Body=json.dumps({
+            "key":          pdf_key,
+            "status":       status,
+            "duration_sec": round(duration_sec, 2),
+            "error":        error
+        }).encode("utf-8"),
+        ContentType="application/json"
+    )
+
+
+def write_summary(manifest_key: str, results: list[dict]) -> None:
+    # batch-poc/manifests/tanda_1.json → batch-poc/results/tanda_1_summary.json
+    base = manifest_key.split("/")[-1].replace(".json", "")
+    summary_key = f"batch-poc/results/{base}_summary.json"
+
+    ok_count    = sum(1 for r in results if r["status"] == "OK")
+    empty_count = sum(1 for r in results if r["status"] == "EMPTY_TEXT")
+    error_count = sum(1 for r in results if r["status"] == "ERROR")
+    total_sec   = sum(r["duration_sec"] for r in results)
+
+    s3.put_object(
+        Bucket=BUCKET,
+        Key=summary_key,
+        Body=json.dumps({
+            "manifest":      manifest_key,
+            "total":         len(results),
+            "ok":            ok_count,
+            "empty_text":    empty_count,
+            "errors":        error_count,
+            "total_sec":     round(total_sec, 2),
+            "avg_sec_file":  round(total_sec / len(results), 2) if results else 0,
+            "results":       results
+        }, indent=2).encode("utf-8"),
+        ContentType="application/json"
+    )
+    print(f"[SUMMARY] OK={ok_count} EMPTY={empty_count} ERROR={error_count} "
+          f"total_time={round(total_sec,1)}s summary_key={summary_key}")
+
+
+def main():
+    print(f"[START] manifest={MANIFEST_KEY} bucket={BUCKET}")
+    keys    = read_manifest()
+    results = []
+
+    for i, key in enumerate(keys, 1):
+        t0 = time.time()
+        try:
+            text, status = extract_text(key)
+            if status == "OK":
+                write_output(key, text)
+            write_log(key, status, time.time() - t0)
+            results.append({"key": key, "status": status, "duration_sec": round(time.time() - t0, 2)})
+            print(f"[{i}/{len(keys)}] {status} {key} ({round(time.time()-t0,2)}s)")
+        except Exception as e:
+            duration = time.time() - t0
+            err_msg  = traceback.format_exc()
+            write_log(key, "ERROR", duration, error=err_msg[:500])
+            results.append({"key": key, "status": "ERROR", "duration_sec": round(duration, 2)})
+            print(f"[{i}/{len(keys)}] ERROR {key}: {e}")
+
+    write_summary(MANIFEST_KEY, results)
+    print("[END]")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### `ecs-extractor/extractor/Dockerfile`
+```dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Dependencias del sistema para pdfplumber
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpoppler-cpp-dev \
+    poppler-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY main.py .
+
+CMD ["python", "main.py"]
+```
+
+---
+
+## Fase 3 — Script de ejecución de tandas
+
+### `ecs-extractor/scripts/run_poc_batches.py`
+
+```python
+"""
+Script de ejecución del POC de extracción.
+Uso:
+  python run_poc_batches.py \
+    --bucket rag-agents-prod \
+    --prefix bora/2024/ \
+    --cluster rag-extractor-poc-prod \
+    --task-family rag-extractor-poc-prod \
+    --subnets subnet-abc123 subnet-def456 \
+    --security-group sg-xyz789
+
+El script:
+1. Lista 200 keys del prefix indicado en S3
+2. Escribe manifests en S3: batch-poc/manifests/tanda_{1,2}.json
+3. Lanza ECS Task tanda_1 en Fargate SPOT
+4. Espera completion
+5. Lanza ECS Task tanda_2
+6. Espera completion
+7. Lee summaries y muestra reporte final
+"""
+import argparse, json, time, sys
+import boto3
+
+s3  = boto3.client("s3")
+ecs = boto3.client("ecs")
+
+
+# ── Argparse ──────────────────────────────────────────────────────────────────
+
+def parse_args():
+    p = argparse.ArgumentParser(description="POC ECS pdfplumber — run batches")
+    p.add_argument("--bucket",         required=True, help="Bucket S3 existente del proyecto")
+    p.add_argument("--prefix",         required=True, help="Prefix S3 donde buscar PDFs (ej: bora/2024/)")
+    p.add_argument("--cluster",        required=True, help="Nombre del ECS cluster")
+    p.add_argument("--task-family",    required=True, help="Task definition family name")
+    p.add_argument("--subnets",        required=True, nargs="+", help="Subnet IDs para la task")
+    p.add_argument("--security-group", required=True, help="Security Group ID para la task")
+    p.add_argument("--total",          type=int, default=200, help="Total de archivos a procesar (default: 200)")
+    p.add_argument("--dry-run",        action="store_true", help="Solo muestra keys y manifests, no lanza tasks")
+    return p.parse_args()
+
+
+# ── S3 helpers ────────────────────────────────────────────────────────────────
+
+def list_pdf_keys(bucket: str, prefix: str, total: int) -> list[str]:
+    """Lista hasta `total` keys de PDFs bajo el prefix dado."""
+    paginator = s3.get_paginator("list_objects_v2")
+    keys = []
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page.get("Contents", []):
+            if obj["Key"].lower().endswith(".pdf"):
+                keys.append(obj["Key"])
+                if len(keys) >= total:
+                    return keys
+    if len(keys) < total:
+        print(f"[WARN] Solo se encontraron {len(keys)} PDFs (se pedían {total})")
+    return keys
+
+
+def write_manifest(bucket: str, batch_num: int, keys: list[str]) -> str:
+    manifest_key = f"batch-poc/manifests/tanda_{batch_num}.json"
+    s3.put_object(
+        Bucket=bucket,
+        Key=manifest_key,
+        Body=json.dumps({"batch": batch_num, "total": len(keys), "keys": keys}).encode(),
+        ContentType="application/json"
+    )
+    print(f"[MANIFEST] tanda_{batch_num}: {len(keys)} archivos → s3://{bucket}/{manifest_key}")
+    return manifest_key
+
+
+# ── ECS helpers ───────────────────────────────────────────────────────────────
+
+def get_latest_task_definition(cluster_client, family: str) -> str:
+    response = cluster_client.describe_task_definition(taskDefinition=family)
+    return response["taskDefinition"]["taskDefinitionArn"]
+
+
+def launch_ecs_task(cluster: str, task_family: str, manifest_key: str,
+                    subnets: list[str], sg: str, bucket: str) -> str:
+    """Lanza una ECS Fargate Spot task y retorna el task ARN."""
+    task_def_arn = get_latest_task_definition(ecs, task_family)
+
+    response = ecs.run_task(
+        cluster=cluster,
+        taskDefinition=task_def_arn,
+        launchType="FARGATE",
+        capacityProviderStrategy=[
+            {"capacityProvider": "FARGATE_SPOT", "weight": 1}
+        ],
+        networkConfiguration={
+            "awsvpcConfiguration": {
+                "subnets":        subnets,
+                "securityGroups": [sg],
+                "assignPublicIp": "ENABLED"  # necesario si las subnets son públicas
+            }
+        },
+        overrides={
+            "containerOverrides": [{
+                "name": "extractor",
+                "environment": [
+                    {"name": "MANIFEST_S3_KEY", "value": manifest_key},
+                    {"name": "RAG_BUCKET_NAME",  "value": bucket}
+                ]
+            }]
+        }
+    )
+
+    failures = response.get("failures", [])
+    if failures:
+        raise RuntimeError(f"ECS run_task falló: {failures}")
+
+    task_arn = response["tasks"][0]["taskArn"]
+    print(f"[ECS] Task lanzada: {task_arn}")
+    return task_arn
+
+
+def wait_for_task(cluster: str, task_arn: str, poll_seconds: int = 30) -> str:
+    """Espera hasta que la task termine y retorna su exit status (SUCCESS/FAILED)."""
+    print(f"[ECS] Esperando task {task_arn.split('/')[-1]}...")
+    while True:
+        response  = ecs.describe_tasks(cluster=cluster, tasks=[task_arn])
+        task      = response["tasks"][0]
+        last_status = task["lastStatus"]
+
+        if last_status == "STOPPED":
+            containers  = task.get("containers", [])
+            exit_code   = containers[0].get("exitCode", -1) if containers else -1
+            stop_reason = task.get("stoppedReason", "")
+            if exit_code == 0:
+                print(f"[ECS] Task completada exitosamente.")
+                return "SUCCESS"
+            else:
+                print(f"[ECS] Task detenida con exitCode={exit_code} reason='{stop_reason}'")
+                return "FAILED"
+
+        print(f"[ECS] Status: {last_status} — esperando {poll_seconds}s...")
+        time.sleep(poll_seconds)
+
+
+# ── Reporte final ─────────────────────────────────────────────────────────────
+
+def print_report(bucket: str, num_batches: int) -> None:
+    print("\n" + "="*60)
+    print("REPORTE FINAL DEL POC")
+    print("="*60)
+
+    total_ok = total_empty = total_error = total_files = 0
+
+    for n in range(1, num_batches + 1):
+        summary_key = f"batch-poc/results/tanda_{n}_summary.json"
+        try:
+            obj     = s3.get_object(Bucket=bucket, Key=summary_key)
+            summary = json.loads(obj["Body"].read())
+            print(f"\nTanda {n}:")
+            print(f"  Total:      {summary['total']}")
+            print(f"  OK:         {summary['ok']}")
+            print(f"  EMPTY_TEXT: {summary['empty_text']}")
+            print(f"  ERRORS:     {summary['errors']}")
+            print(f"  Tiempo:     {summary['total_sec']}s ({summary['avg_sec_file']}s/archivo)")
+            total_ok    += summary["ok"]
+            total_empty += summary["empty_text"]
+            total_error += summary["errors"]
+            total_files += summary["total"]
+        except Exception as e:
+            print(f"\nTanda {n}: [ERROR leyendo summary] {e}")
+
+    print(f"\nTOTAL GLOBAL: {total_files} archivos")
+    print(f"  OK:         {total_ok} ({round(100*total_ok/total_files,1) if total_files else 0}%)")
+    print(f"  EMPTY_TEXT: {total_empty} ({round(100*total_empty/total_files,1) if total_files else 0}%)")
+    print(f"  ERRORS:     {total_error}")
+    print(f"\nOutputs:  s3://{bucket}/batch-poc/output/")
+    print(f"Logs:     s3://{bucket}/batch-poc/logs/")
+    print(f"Summaries:s3://{bucket}/batch-poc/results/")
+    print("="*60)
+
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+def main():
+    args = parse_args()
+
+    # 1. Listar 200 keys
+    print(f"[INIT] Buscando {args.total} PDFs en s3://{args.bucket}/{args.prefix}")
+    all_keys = list_pdf_keys(args.bucket, args.prefix, args.total)
+    if not all_keys:
+        print("[ERROR] No se encontraron PDFs. Verificar bucket y prefix.")
+        sys.exit(1)
+
+    mid = len(all_keys) // 2
+    batches = [all_keys[:mid], all_keys[mid:]]
+    print(f"[INIT] {len(all_keys)} archivos → tanda_1={len(batches[0])} tanda_2={len(batches[1])}")
+
+    # 2. Escribir manifests
+    manifest_keys = []
+    for i, batch in enumerate(batches, 1):
+        mk = write_manifest(args.bucket, i, batch)
+        manifest_keys.append(mk)
+
+    if args.dry_run:
+        print("[DRY-RUN] Manifests escritos. No se lanzaron tasks.")
+        return
+
+    # 3. Ejecutar tandas en secuencia
+    for i, manifest_key in enumerate(manifest_keys, 1):
+        print(f"\n[BATCH {i}/2] Iniciando...")
+        task_arn = launch_ecs_task(
+            cluster=args.cluster,
+            task_family=args.task_family,
+            manifest_key=manifest_key,
+            subnets=args.subnets,
+            sg=args.security_group,
+            bucket=args.bucket
+        )
+        result = wait_for_task(args.cluster, task_arn)
+        if result == "FAILED":
+            print(f"[ERROR] Tanda {i} falló. Revisar CloudWatch: /ecs/rag-extractor-poc-*")
+            # Continúa con tanda 2 de todas formas para maximizar información del POC
+
+    # 4. Reporte
+    print_report(args.bucket, len(batches))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## Fase 4 — CI/CD GitHub Actions
+
+### `.github/workflows/ecs-extractor-poc.yml`
+
+```yaml
+name: ECS Extractor POC — CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "ecs-extractor/**"
+      - "terraform/modules/ecs_extractor/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "ecs-extractor/**"
+      - "terraform/modules/ecs_extractor/**"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Entorno destino"
+        required: true
+        default: "dev"
+        type: choice
+        options: [dev, prod]
+
+env:
+  AWS_REGION:        us-east-1
+  ECR_REPO_NAME:     rag-ecs-extractor
+  TF_MODULE_PATH:    terraform/modules/ecs_extractor
+  TF_WORKING_DIR:    terraform/envs/${{ github.event.inputs.environment || 'dev' }}
+
+jobs:
+
+  # ── Job 1: Terraform Plan/Apply ─────────────────────────────────────────────
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # OIDC
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.8.0"
+
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform apply -input=false -auto-approve tfplan
+
+  # ── Job 2: Build y Push Docker Image a ECR ──────────────────────────────────
+  docker:
+    name: Build & Push ECR
+    runs-on: ubuntu-latest
+    needs: terraform
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        working-directory: ecs-extractor/extractor
+        run: |
+          docker build \
+            --tag ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}:latest \
+            --tag ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}:${{ github.sha }} \
+            .
+
+      - name: Push to ECR
+        run: |
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}:latest
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}:${{ github.sha }}
+
+      - name: Update ECS Task Definition
+        run: |
+          aws ecs register-task-definition \
+            --cli-input-json "$(aws ecs describe-task-definition \
+              --task-definition rag-extractor-poc-dev \
+              --query 'taskDefinition' \
+              --output json \
+              | jq 'del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)' \
+              | jq '.containerDefinitions[0].image = "${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}:${{ github.sha }}"')"
+
+      - name: Summary
+        run: |
+          echo "### Deploy completado" >> $GITHUB_STEP_SUMMARY
+          echo "- **Imagen:** ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}:${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+```
+
+### Secretos requeridos en GitHub
+
+| Secret | Descripción |
+|---|---|
+| `AWS_DEPLOY_ROLE_ARN` | ARN del IAM Role con OIDC para GitHub Actions |
+
+### IAM Role OIDC para GitHub Actions (Terraform)
+
+```hcl
+resource "aws_iam_role" "github_actions_oidc" {
+  name = "rag-github-actions-ecs-extractor"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Federated = "arn:aws:iam::${var.aws_account_id}:oidc-provider/token.actions.githubusercontent.com"
+      }
+      Action = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringLike = {
+          "token.actions.githubusercontent.com:sub" = "repo:TU_ORG/rag-agents:*"
+        }
+        StringEquals = {
+          "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+        }
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "github_actions_oidc" {
+  role = aws_iam_role.github_actions_oidc.id
+  policy = jsonencode({
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["ecr:*", "ecs:*", "iam:PassRole", "logs:*"]
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:ListBucket", "s3:DeleteObject"]
+        Resource = [
+          "arn:aws:s3:::${var.rag_bucket_name}",
+          "arn:aws:s3:::${var.rag_bucket_name}/*"
+        ]
+      },
+      {
+        # Terraform state
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:ListBucket", "dynamodb:*"]
+        Resource = "*"
+      }
+    ]
+  })
+}
+```
+
+---
+
+## Checklist de validación del POC
+
+### Pre-ejecución
+- [ ] ECR repository creado por Terraform
+- [ ] Docker image buildeada y pusheada a ECR (`latest`)
+- [ ] ECS cluster y task definition existentes en consola AWS
+- [ ] IAM roles con permisos S3 correctos
+- [ ] Bucket S3 existente accesible desde la task (test: `aws s3 ls s3://{bucket}/{prefix}`)
+- [ ] Security group permite egress a S3 (via VPC Endpoint o NAT)
+
+### Durante ejecución
+- [ ] `run_poc_batches.py --dry-run` muestra 200 keys y escribe manifests correctamente
+- [ ] Tanda 1: task lanza con status `RUNNING` en consola ECS
+- [ ] Logs en CloudWatch: `/ecs/rag-extractor-poc-dev` muestran progreso `[N/100]`
+- [ ] Tanda 1 completa: `batch-poc/results/tanda_1_summary.json` existe en S3
+- [ ] Tanda 2: mismo flujo
+
+### Post-ejecución
+- [ ] `batch-poc/output/` contiene archivos `.txt` para los PDFs con texto digital
+- [ ] `batch-poc/logs/` contiene un `.json` por cada archivo procesado
+- [ ] Ratio `OK / total` > 90% (si no, revisar si BORA/ANMAT usa PDFs escaneados)
+- [ ] Tiempo promedio por archivo está dentro del estimado (2–5 seg para PDFs con texto)
+- [ ] Costo del POC visible en Cost Explorer < USD 5
+
+---
+
+## Trade-offs del POC
+
+| Aspecto | Valor |
+|---|---|
+| pdfplumber no hace OCR | PDFs escaneados devuelven `EMPTY_TEXT`. Si la proporción es alta, agregar Tesseract al Dockerfile antes de la implementación full. |
+| Fargate Spot puede ser interrumpido | Para el POC con 100 archivos por tanda el riesgo es bajo. En la implementación full usar checkpoint en S3 para reanudar. |
+| Sin retry automático | El script es lineal. Errores individuales quedan en log pero no se reintentan. Suficiente para POC. |
+| Procesamiento secuencial por task | Cada task procesa su tanda en serie. Para la implementación full: múltiples tasks paralelas, cada una con un subconjunto. |
+
+---
+
+## Variables de entorno del container
+
+| Variable | Fuente | Descripción |
+|---|---|---|
+| `RAG_BUCKET_NAME` | Task Definition (fija) | Bucket S3 del proyecto |
+| `MANIFEST_S3_KEY` | Override en run_task | Key del manifest JSON de la tanda |
+| `AWS_REGION` | Task Definition (fija) | Región AWS |
+
+---
+
+## Comandos de ejecución del POC
+
+```bash
+# 1. Dry run: solo muestra keys y escribe manifests
+python ecs-extractor/scripts/run_poc_batches.py \
+  --bucket rag-agents-prod \
+  --prefix bora/2024/ \
+  --cluster rag-extractor-poc-dev \
+  --task-family rag-extractor-poc-dev \
+  --subnets subnet-abc123 subnet-def456 \
+  --security-group sg-xyz789 \
+  --dry-run
+
+# 2. Ejecución real
+python ecs-extractor/scripts/run_poc_batches.py \
+  --bucket rag-agents-prod \
+  --prefix bora/2024/ \
+  --cluster rag-extractor-poc-dev \
+  --task-family rag-extractor-poc-dev \
+  --subnets subnet-abc123 subnet-def456 \
+  --security-group sg-xyz789
+
+# 3. Ver summary de tanda 1 directamente
+aws s3 cp s3://rag-agents-prod/batch-poc/results/tanda_1_summary.json - | jq .
+
+# 4. Contar outputs generados
+aws s3 ls s3://rag-agents-prod/batch-poc/output/ --recursive | wc -l
+```

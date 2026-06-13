@@ -1,0 +1,10 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform/envs/*/terraform.tfvars
+terraform/bootstrap/terraform.tfvars
+terraform/bootstrap/.terraform/
+terraform/bootstrap/terraform.tfstate
+__pycache__/
+*.pyc
+*.tfplan
