@@ -97,6 +97,7 @@ data "aws_iam_policy_document" "github_actions_deploy" {
       "iam:CreateRole",
       "iam:DeleteRole",
       "iam:UpdateRole",
+      "iam:UpdateAssumeRolePolicy",
       "iam:PassRole",
       "iam:AttachRolePolicy",
       "iam:DetachRolePolicy",

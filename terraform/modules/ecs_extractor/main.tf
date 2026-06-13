@@ -35,6 +35,7 @@ resource "aws_ecs_cluster" "extractor" {
 resource "aws_iam_role" "ecs_task_execution" {
   name = "rag-ecs-extractor-execution-role-${var.environment}"
   assume_role_policy = jsonencode({
+    Version = "2012-10-17"
     Statement = [{
       Effect    = "Allow"
       Principal = { Service = "ecs-tasks.amazonaws.com" }
@@ -51,6 +52,7 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_managed" {
 resource "aws_iam_role" "ecs_task" {
   name = "rag-ecs-extractor-task-role-${var.environment}"
   assume_role_policy = jsonencode({
+    Version = "2012-10-17"
     Statement = [{
       Effect    = "Allow"
       Principal = { Service = "ecs-tasks.amazonaws.com" }
