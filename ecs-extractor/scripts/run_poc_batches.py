@@ -99,7 +99,6 @@ def launch_ecs_task(
         cluster=cluster,
         taskDefinition=task_def_arn,
         launchType="FARGATE",
-        capacityProviderStrategy=[{"capacityProvider": "FARGATE_SPOT", "weight": 1}],
         networkConfiguration={
             "awsvpcConfiguration": {
                 "subnets": subnets,
@@ -202,9 +201,13 @@ def main():
         sys.exit(1)
 
     mid = len(all_keys) // 2
-    batches = [all_keys[:mid], all_keys[mid:]]
+    if len(all_keys) <= 1:
+        batches = [all_keys]
+    else:
+        batches = [all_keys[:mid], all_keys[mid:]]
     print(
-        f"[INIT] {len(all_keys)} archivos → tanda_1={len(batches[0])} tanda_2={len(batches[1])}"
+        f"[INIT] {len(all_keys)} archivos → "
+        + ", ".join(f"tanda_{i + 1}={len(b)}" for i, b in enumerate(batches))
     )
 
     manifest_keys = []
@@ -217,7 +220,7 @@ def main():
         return
 
     for i, manifest_key in enumerate(manifest_keys, 1):
-        print(f"\n[BATCH {i}/2] Iniciando...")
+        print(f"\n[BATCH {i}/{len(manifest_keys)}] Iniciando...")
         task_arn = launch_ecs_task(
             cluster=args.cluster,
             task_family=args.task_family,
