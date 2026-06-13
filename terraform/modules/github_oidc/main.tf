@@ -1,11 +1,8 @@
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_openid_connect_provider" "github" {
-  url = "https://token.actions.githubusercontent.com"
-}
-
 locals {
-  github_oidc_sub = "repo:${var.github_repository}:environment:${var.github_actions_environment}"
+  github_oidc_provider_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
+  github_oidc_sub          = "repo:${var.github_repository}:environment:${var.github_actions_environment}"
 }
 
 data "aws_iam_policy_document" "github_actions_assume" {
@@ -15,7 +12,7 @@ data "aws_iam_policy_document" "github_actions_assume" {
 
     principals {
       type        = "Federated"
-      identifiers = [data.aws_iam_openid_connect_provider.github.arn]
+      identifiers = [local.github_oidc_provider_arn]
     }
 
     condition {
