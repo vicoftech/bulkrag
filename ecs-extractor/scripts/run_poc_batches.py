@@ -162,17 +162,19 @@ def print_report(bucket: str, num_batches: int) -> None:
     print("REPORTE FINAL DEL POC")
     print("=" * 60)
 
-    total_ok = total_empty = total_error = total_files = 0
+    total_ok = total_empty = total_error = total_skipped = total_files = 0
 
     for n in range(1, num_batches + 1):
         summary_key = f"batch-poc/results/tanda_{n}_summary.json"
         try:
             obj = s3.get_object(Bucket=bucket, Key=summary_key)
             summary = json.loads(obj["Body"].read())
+            skipped = summary.get("skipped_too_large", 0)
             print(f"\nTanda {n}:")
             print(f"  Total:      {summary['total']}")
             print(f"  OK:         {summary['ok']}")
             print(f"  EMPTY_TEXT: {summary['empty_text']}")
+            print(f"  SKIPPED:    {skipped} (>{summary.get('max_file_size_mb', 30)} MB)")
             print(f"  ERRORS:     {summary['errors']}")
             wall = summary.get("wall_time_sec", summary["total_sec"])
             workers = summary.get("workers", 1)
@@ -184,6 +186,7 @@ def print_report(bucket: str, num_batches: int) -> None:
             total_ok += summary["ok"]
             total_empty += summary["empty_text"]
             total_error += summary["errors"]
+            total_skipped += skipped
             total_files += summary["total"]
         except Exception as e:
             print(f"\nTanda {n}: [ERROR leyendo summary] {e}")
@@ -195,6 +198,7 @@ def print_report(bucket: str, num_batches: int) -> None:
     print(
         f"  EMPTY_TEXT: {total_empty} ({round(100 * total_empty / total_files, 1) if total_files else 0}%)"
     )
+    print(f"  SKIPPED:    {total_skipped}")
     print(f"  ERRORS:     {total_error}")
     print(f"\nOutputs:  s3://{bucket}/batch-poc/output/")
     print(f"Logs:     s3://{bucket}/batch-poc/logs/")

@@ -37,6 +37,12 @@ variable "worker_count" {
   description = "PDFs procesados en paralelo por task (debe ser <= vCPU asignados)"
 }
 
+variable "max_file_size_mb" {
+  type        = number
+  default     = 30
+  description = "Tamaño máximo de PDF a procesar; archivos mayores se descartan"
+}
+
 variable "vpc_id" {
   type = string
 }

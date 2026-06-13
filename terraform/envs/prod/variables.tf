@@ -36,6 +36,11 @@ variable "worker_count" {
   default = 4
 }
 
+variable "max_file_size_mb" {
+  type    = number
+  default = 30
+}
+
 variable "vpc_id" {
   type = string
 }

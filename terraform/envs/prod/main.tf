@@ -24,6 +24,7 @@ module "ecs_extractor" {
   task_cpu            = var.task_cpu
   task_memory         = var.task_memory
   worker_count        = var.worker_count
+  max_file_size_mb    = var.max_file_size_mb
   vpc_id              = var.vpc_id
   subnet_ids          = var.subnet_ids
 }
