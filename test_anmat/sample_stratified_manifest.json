@@ -1,0 +1,4069 @@
+{
+  "seed": 42,
+  "sampling_method": "stratified_random_by_size_quartiles",
+  "sample_per_quartile": 125,
+  "tenant_prefix": "tenant_anmat/",
+  "dest_prefix": "tenant_anmat/sample-stratified/",
+  "population": {
+    "pdf_count": 261090,
+    "total_size_gb": 171.62,
+    "avg_size_mb": 0.673,
+    "median_size_mb": 0.157,
+    "size_quartile_bounds_bytes": {
+      "q1_max": 87159,
+      "q2_max": 165087,
+      "q3_max": 351956,
+      "min": 787,
+      "max": 112842676
+    }
+  },
+  "sample": {
+    "pdf_count": 500,
+    "copied_ok": 500,
+    "copied_failed": 0,
+    "total_size_mb": 382.84,
+    "avg_size_mb": 0.766,
+    "median_size_mb": 0.157,
+    "pct_of_population_count": 0.192,
+    "quartile_stats": {
+      "Q1": {
+        "pool_size": 65275,
+        "sampled": 125,
+        "avg_size_mb": 0.056
+      },
+      "Q2": {
+        "pool_size": 65335,
+        "sampled": 125,
+        "avg_size_mb": 0.12
+      },
+      "Q3": {
+        "pool_size": 65208,
+        "sampled": 125,
+        "avg_size_mb": 0.191
+      },
+      "Q4": {
+        "pool_size": 65272,
+        "sampled": 125,
+        "avg_size_mb": 2.696
+      }
+    },
+    "year_distribution": {
+      "2010": 1,
+      "2011": 1,
+      "2012": 1,
+      "2014": 1,
+      "2015": 1,
+      "2018": 1,
+      "2019": 1,
+      "2020": 1,
+      "2021": 1,
+      "2022": 3,
+      "2023": 433,
+      "2024": 16,
+      "2025": 39
+    }
+  },
+  "keys": [
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20101101/default/aviso_2010_20101101_default_013432.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20101101/default/aviso_2010_20101101_default_013432.pdf",
+      "size_bytes": 108396,
+      "size_mb": 0.103,
+      "quartile": "Q2",
+      "year": "2010"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20110101/default/aviso_2011_20110101_default_012708.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20110101/default/aviso_2011_20110101_default_012708.pdf",
+      "size_bytes": 395429,
+      "size_mb": 0.377,
+      "quartile": "Q4",
+      "year": "2011"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20121201/default/aviso_2012_20121201_default_011805.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20121201/default/aviso_2012_20121201_default_011805.pdf",
+      "size_bytes": 45185,
+      "size_mb": 0.043,
+      "quartile": "Q1",
+      "year": "2012"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20140101/default/aviso_2014_20140101_default_004247.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20140101/default/aviso_2014_20140101_default_004247.pdf",
+      "size_bytes": 141062,
+      "size_mb": 0.135,
+      "quartile": "Q2",
+      "year": "2014"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20150701/default/aviso_2015_20150701_default_001353.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20150701/default/aviso_2015_20150701_default_001353.pdf",
+      "size_bytes": 871049,
+      "size_mb": 0.831,
+      "quartile": "Q4",
+      "year": "2015"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20180701/default/aviso_2018_20180701_default_215458.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20180701/default/aviso_2018_20180701_default_215458.pdf",
+      "size_bytes": 92142,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2018"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20191201/default/aviso_2019_20191201_default_214200.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20191201/default/aviso_2019_20191201_default_214200.pdf",
+      "size_bytes": 167477,
+      "size_mb": 0.16,
+      "quartile": "Q3",
+      "year": "2019"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20200101/default/aviso_2020_20200101_default_213559.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20200101/default/aviso_2020_20200101_default_213559.pdf",
+      "size_bytes": 46722976,
+      "size_mb": 44.559,
+      "quartile": "Q4",
+      "year": "2020"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20210101/default/aviso_2021_20210101_default_211706.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20210101/default/aviso_2021_20210101_default_211706.pdf",
+      "size_bytes": 165050,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2021"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20220201/default/aviso_2022_20220201_default_205105.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20220201/default/aviso_2022_20220201_default_205105.pdf",
+      "size_bytes": 165329,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2022"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20220601/default/aviso_2022_20220601_default_204737.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20220601/default/aviso_2022_20220601_default_204737.pdf",
+      "size_bytes": 6948290,
+      "size_mb": 6.626,
+      "quartile": "Q4",
+      "year": "2022"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20220701/default/aviso_2022_20220701_default_204633.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20220701/default/aviso_2022_20220701_default_204633.pdf",
+      "size_bytes": 2396615,
+      "size_mb": 2.286,
+      "quartile": "Q4",
+      "year": "2022"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0059-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0059-12.pdf",
+      "size_bytes": 657510,
+      "size_mb": 0.627,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0069-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0069-11.pdf",
+      "size_bytes": 906882,
+      "size_mb": 0.865,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0153-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0153-16.pdf",
+      "size_bytes": 83451,
+      "size_mb": 0.08,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0156-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0156-11.pdf",
+      "size_bytes": 282765,
+      "size_mb": 0.27,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0157-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0157-17.pdf",
+      "size_bytes": 430850,
+      "size_mb": 0.411,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0167-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0167-23.pdf",
+      "size_bytes": 400190,
+      "size_mb": 0.382,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0271-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0271-11.pdf",
+      "size_bytes": 49131,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0404-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0404-11.pdf",
+      "size_bytes": 766922,
+      "size_mb": 0.731,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0563-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0563-17.pdf",
+      "size_bytes": 43917,
+      "size_mb": 0.042,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0689-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0689-11.pdf",
+      "size_bytes": 44457,
+      "size_mb": 0.042,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0881-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0881-11.pdf",
+      "size_bytes": 484241,
+      "size_mb": 0.462,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0913-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0913-22.pdf",
+      "size_bytes": 165018,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0915-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_0915-20.pdf",
+      "size_bytes": 1558707,
+      "size_mb": 1.486,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10079-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10079-17.pdf",
+      "size_bytes": 934654,
+      "size_mb": 0.891,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10328-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10328-23.pdf",
+      "size_bytes": 2890151,
+      "size_mb": 2.756,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10677-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10677-16.pdf",
+      "size_bytes": 1490563,
+      "size_mb": 1.422,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1069-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1069-14.pdf",
+      "size_bytes": 85448,
+      "size_mb": 0.081,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10836-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_10836-16.pdf",
+      "size_bytes": 463071,
+      "size_mb": 0.442,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1087-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1087-11.pdf",
+      "size_bytes": 39585,
+      "size_mb": 0.038,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_11700-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_11700-17.pdf",
+      "size_bytes": 199015,
+      "size_mb": 0.19,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_12127-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_12127-17.pdf",
+      "size_bytes": 93118,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1239-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1239-21.pdf",
+      "size_bytes": 472786,
+      "size_mb": 0.451,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1261-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1261-23.pdf",
+      "size_bytes": 165188,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_12808-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_12808-17.pdf",
+      "size_bytes": 550209,
+      "size_mb": 0.525,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1286-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1286-22.pdf",
+      "size_bytes": 165156,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1318-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1318-12.pdf",
+      "size_bytes": 200890,
+      "size_mb": 0.192,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1339-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1339-21.pdf",
+      "size_bytes": 165017,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_13999-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_13999-16.pdf",
+      "size_bytes": 272778,
+      "size_mb": 0.26,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1414-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1414-15.pdf",
+      "size_bytes": 51693,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1447-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1447-11.pdf",
+      "size_bytes": 51280,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1505-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1505-14.pdf",
+      "size_bytes": 299490,
+      "size_mb": 0.286,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1564-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1564-15.pdf",
+      "size_bytes": 201248,
+      "size_mb": 0.192,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1616-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1616-23.pdf",
+      "size_bytes": 165279,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1621-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1621-22.pdf",
+      "size_bytes": 170796,
+      "size_mb": 0.163,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1661-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1661-14.pdf",
+      "size_bytes": 134403,
+      "size_mb": 0.128,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1687-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1687-13.pdf",
+      "size_bytes": 27819,
+      "size_mb": 0.027,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1728-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1728-16.pdf",
+      "size_bytes": 49152,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1748-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1748-20.pdf",
+      "size_bytes": 662883,
+      "size_mb": 0.632,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1773-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1773-16.pdf",
+      "size_bytes": 131072,
+      "size_mb": 0.125,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1873-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1873-22.pdf",
+      "size_bytes": 165186,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1937-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_1937-20.pdf",
+      "size_bytes": 82126,
+      "size_mb": 0.078,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2058-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2058-16.pdf",
+      "size_bytes": 407831,
+      "size_mb": 0.389,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2059-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2059-22.pdf",
+      "size_bytes": 168517,
+      "size_mb": 0.161,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2115-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2115-16.pdf",
+      "size_bytes": 85677,
+      "size_mb": 0.082,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2140-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2140-17.pdf",
+      "size_bytes": 66652,
+      "size_mb": 0.064,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2230-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2230-11.pdf",
+      "size_bytes": 37406,
+      "size_mb": 0.036,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2298-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2298-17.pdf",
+      "size_bytes": 1534307,
+      "size_mb": 1.463,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2310-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2310-20.pdf",
+      "size_bytes": 165188,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2370-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2370-14.pdf",
+      "size_bytes": 42831,
+      "size_mb": 0.041,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2388-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2388-16.pdf",
+      "size_bytes": 220131,
+      "size_mb": 0.21,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2416-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2416-17.pdf",
+      "size_bytes": 59886,
+      "size_mb": 0.057,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2426-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2426-17.pdf",
+      "size_bytes": 70016,
+      "size_mb": 0.067,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2431-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2431-20.pdf",
+      "size_bytes": 165566,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2647-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2647-13.pdf",
+      "size_bytes": 81799,
+      "size_mb": 0.078,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2739-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2739-11.pdf",
+      "size_bytes": 386985,
+      "size_mb": 0.369,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2763-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2763-20.pdf",
+      "size_bytes": 165610,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2794-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2794-14.pdf",
+      "size_bytes": 104924,
+      "size_mb": 0.1,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2802-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2802-14.pdf",
+      "size_bytes": 616996,
+      "size_mb": 0.588,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2824-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2824-23.pdf",
+      "size_bytes": 165187,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2919-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2919-20.pdf",
+      "size_bytes": 67831,
+      "size_mb": 0.065,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2967-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_2967-11.pdf",
+      "size_bytes": 484449,
+      "size_mb": 0.462,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3008-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3008-21.pdf",
+      "size_bytes": 444837,
+      "size_mb": 0.424,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3017-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3017-23.pdf",
+      "size_bytes": 178510,
+      "size_mb": 0.17,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3128-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3128-23.pdf",
+      "size_bytes": 165460,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3183-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3183-23.pdf",
+      "size_bytes": 332132,
+      "size_mb": 0.317,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3212-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3212-16.pdf",
+      "size_bytes": 52405,
+      "size_mb": 0.05,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3232-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3232-21.pdf",
+      "size_bytes": 164853,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3280-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3280-23.pdf",
+      "size_bytes": 165672,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3300-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3300-18.pdf",
+      "size_bytes": 98629,
+      "size_mb": 0.094,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3334-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3334-13.pdf",
+      "size_bytes": 135643,
+      "size_mb": 0.129,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3404-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3404-17.pdf",
+      "size_bytes": 91993,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3450-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3450-17.pdf",
+      "size_bytes": 404822,
+      "size_mb": 0.386,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3511-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3511-12.pdf",
+      "size_bytes": 882566,
+      "size_mb": 0.842,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3598-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3598-14.pdf",
+      "size_bytes": 82746,
+      "size_mb": 0.079,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3616-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3616-11.pdf",
+      "size_bytes": 816739,
+      "size_mb": 0.779,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3673-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3673-14.pdf",
+      "size_bytes": 80960,
+      "size_mb": 0.077,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3749-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3749-16.pdf",
+      "size_bytes": 82890,
+      "size_mb": 0.079,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3769-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3769-11.pdf",
+      "size_bytes": 76420,
+      "size_mb": 0.073,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3945-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3945-20.pdf",
+      "size_bytes": 82301,
+      "size_mb": 0.078,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3956-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3956-22.pdf",
+      "size_bytes": 1265759,
+      "size_mb": 1.207,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3960-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3960-14.pdf",
+      "size_bytes": 143440,
+      "size_mb": 0.137,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3986-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_3986-10.pdf",
+      "size_bytes": 147248,
+      "size_mb": 0.14,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4049-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4049-22.pdf",
+      "size_bytes": 165010,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4083-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4083-13.pdf",
+      "size_bytes": 205685,
+      "size_mb": 0.196,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4199-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4199-18.pdf",
+      "size_bytes": 1485264,
+      "size_mb": 1.416,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4320-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4320-16.pdf",
+      "size_bytes": 1155106,
+      "size_mb": 1.102,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4336-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4336-14.pdf",
+      "size_bytes": 93101,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4393-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4393-16.pdf",
+      "size_bytes": 49375,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4485-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4485-12.pdf",
+      "size_bytes": 132623,
+      "size_mb": 0.126,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4534-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4534-12.pdf",
+      "size_bytes": 45849,
+      "size_mb": 0.044,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4540-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4540-22.pdf",
+      "size_bytes": 164905,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4590-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4590-22.pdf",
+      "size_bytes": 165021,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4725-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4725-16.pdf",
+      "size_bytes": 59438,
+      "size_mb": 0.057,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4732-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4732-20.pdf",
+      "size_bytes": 175476,
+      "size_mb": 0.167,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4736-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4736-21.pdf",
+      "size_bytes": 165505,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4772-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4772-10.pdf",
+      "size_bytes": 689820,
+      "size_mb": 0.658,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4773-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4773-22.pdf",
+      "size_bytes": 165753,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4798-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4798-16.pdf",
+      "size_bytes": 630167,
+      "size_mb": 0.601,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4843-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4843-16.pdf",
+      "size_bytes": 83270,
+      "size_mb": 0.079,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4850-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4850-17.pdf",
+      "size_bytes": 634860,
+      "size_mb": 0.605,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4905-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4905-17.pdf",
+      "size_bytes": 49646,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4942-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4942-15.pdf",
+      "size_bytes": 47191,
+      "size_mb": 0.045,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4989-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_4989-12.pdf",
+      "size_bytes": 24038,
+      "size_mb": 0.023,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5009-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5009-20.pdf",
+      "size_bytes": 164830,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5042-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5042-16.pdf",
+      "size_bytes": 1250530,
+      "size_mb": 1.193,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5044-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5044-20.pdf",
+      "size_bytes": 165532,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5087-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5087-21.pdf",
+      "size_bytes": 44997,
+      "size_mb": 0.043,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5119-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5119-13.pdf",
+      "size_bytes": 557638,
+      "size_mb": 0.532,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5190-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5190-13.pdf",
+      "size_bytes": 80352,
+      "size_mb": 0.077,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5193-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5193-15.pdf",
+      "size_bytes": 59428,
+      "size_mb": 0.057,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5323-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5323-11.pdf",
+      "size_bytes": 327088,
+      "size_mb": 0.312,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5377-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5377-13.pdf",
+      "size_bytes": 341908,
+      "size_mb": 0.326,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5392-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5392-22.pdf",
+      "size_bytes": 6036377,
+      "size_mb": 5.757,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5447-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5447-12.pdf",
+      "size_bytes": 35206,
+      "size_mb": 0.034,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5449-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5449-13.pdf",
+      "size_bytes": 53975,
+      "size_mb": 0.051,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5465-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5465-18.pdf",
+      "size_bytes": 92038,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5508-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5508-23.pdf",
+      "size_bytes": 60396026,
+      "size_mb": 57.598,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5510-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5510-12.pdf",
+      "size_bytes": 239667,
+      "size_mb": 0.229,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5520-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5520-13.pdf",
+      "size_bytes": 445674,
+      "size_mb": 0.425,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5635-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5635-22.pdf",
+      "size_bytes": 165383,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5765-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5765-23.pdf",
+      "size_bytes": 165018,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5779-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5779-16.pdf",
+      "size_bytes": 334861,
+      "size_mb": 0.319,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5811-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5811-14.pdf",
+      "size_bytes": 87543,
+      "size_mb": 0.083,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5814-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5814-23.pdf",
+      "size_bytes": 174314,
+      "size_mb": 0.166,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5858-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5858-11.pdf",
+      "size_bytes": 48963,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5899-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5899-17.pdf",
+      "size_bytes": 419598,
+      "size_mb": 0.4,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5910-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5910-15.pdf",
+      "size_bytes": 56612,
+      "size_mb": 0.054,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5969-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5969-18.pdf",
+      "size_bytes": 92286,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5975-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5975-20.pdf",
+      "size_bytes": 165032,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5980-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_5980-15.pdf",
+      "size_bytes": 56501,
+      "size_mb": 0.054,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6068-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6068-23.pdf",
+      "size_bytes": 165478,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6076-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6076-15.pdf",
+      "size_bytes": 596682,
+      "size_mb": 0.569,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6099-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6099-14.pdf",
+      "size_bytes": 44718,
+      "size_mb": 0.043,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6108-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6108-20.pdf",
+      "size_bytes": 166228,
+      "size_mb": 0.159,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6144-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6144-22.pdf",
+      "size_bytes": 165631,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6169-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6169-17.pdf",
+      "size_bytes": 56549,
+      "size_mb": 0.054,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6174-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6174-13.pdf",
+      "size_bytes": 86826,
+      "size_mb": 0.083,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6180-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6180-14.pdf",
+      "size_bytes": 70208,
+      "size_mb": 0.067,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6188-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6188-17.pdf",
+      "size_bytes": 89748,
+      "size_mb": 0.086,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6201-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6201-20.pdf",
+      "size_bytes": 165365,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6339-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6339-11.pdf",
+      "size_bytes": 427194,
+      "size_mb": 0.407,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6345-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6345-22.pdf",
+      "size_bytes": 165279,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6363-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6363-10.pdf",
+      "size_bytes": 216931,
+      "size_mb": 0.207,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6397-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6397-18.pdf",
+      "size_bytes": 1603045,
+      "size_mb": 1.529,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6452-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6452-15.pdf",
+      "size_bytes": 51411,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6531-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6531-10.pdf",
+      "size_bytes": 57895,
+      "size_mb": 0.055,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6586-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6586-22.pdf",
+      "size_bytes": 165067,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6686-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6686-17.pdf",
+      "size_bytes": 113479,
+      "size_mb": 0.108,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6712-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6712-14.pdf",
+      "size_bytes": 665177,
+      "size_mb": 0.634,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6723-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6723-11.pdf",
+      "size_bytes": 394270,
+      "size_mb": 0.376,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6761-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6761-21.pdf",
+      "size_bytes": 165417,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6788-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6788-21.pdf",
+      "size_bytes": 4232139,
+      "size_mb": 4.036,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6792-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6792-22.pdf",
+      "size_bytes": 4651759,
+      "size_mb": 4.436,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6937-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6937-20.pdf",
+      "size_bytes": 165026,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6953-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6953-16.pdf",
+      "size_bytes": 89311,
+      "size_mb": 0.085,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6981-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_6981-18.pdf",
+      "size_bytes": 147517,
+      "size_mb": 0.141,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7027-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7027-18.pdf",
+      "size_bytes": 92331,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7047-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7047-17.pdf",
+      "size_bytes": 111173,
+      "size_mb": 0.106,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7090-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7090-21.pdf",
+      "size_bytes": 165937,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7394-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7394-10.pdf",
+      "size_bytes": 51882,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7462-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7462-15.pdf",
+      "size_bytes": 56074,
+      "size_mb": 0.053,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7535-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7535-17.pdf",
+      "size_bytes": 51767,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7603-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7603-18.pdf",
+      "size_bytes": 93262,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7697-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7697-18.pdf",
+      "size_bytes": 92513,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7833-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7833-16.pdf",
+      "size_bytes": 83663,
+      "size_mb": 0.08,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7845-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7845-20.pdf",
+      "size_bytes": 165447,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7928-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7928-17.pdf",
+      "size_bytes": 56966,
+      "size_mb": 0.054,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7941-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_7941-22.pdf",
+      "size_bytes": 294089,
+      "size_mb": 0.28,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8010-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8010-11.pdf",
+      "size_bytes": 48900,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8083-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8083-15.pdf",
+      "size_bytes": 126969,
+      "size_mb": 0.121,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8099-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8099-23.pdf",
+      "size_bytes": 165004,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8114-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8114-22.pdf",
+      "size_bytes": 45228,
+      "size_mb": 0.043,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8288-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8288-17.pdf",
+      "size_bytes": 63383,
+      "size_mb": 0.06,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8313-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8313-15.pdf",
+      "size_bytes": 1115037,
+      "size_mb": 1.063,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8320-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8320-18.pdf",
+      "size_bytes": 91991,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8323-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8323-15.pdf",
+      "size_bytes": 136357,
+      "size_mb": 0.13,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8386-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8386-22.pdf",
+      "size_bytes": 165111,
+      "size_mb": 0.157,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8531-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8531-17.pdf",
+      "size_bytes": 52162,
+      "size_mb": 0.05,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8551-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8551-17.pdf",
+      "size_bytes": 58783,
+      "size_mb": 0.056,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8564-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8564-14.pdf",
+      "size_bytes": 52680,
+      "size_mb": 0.05,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8569-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8569-15.pdf",
+      "size_bytes": 64732,
+      "size_mb": 0.062,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8588-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8588-23.pdf",
+      "size_bytes": 165143,
+      "size_mb": 0.157,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8620-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8620-23.pdf",
+      "size_bytes": 165704,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8705-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8705-11.pdf",
+      "size_bytes": 873070,
+      "size_mb": 0.833,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8775-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8775-11.pdf",
+      "size_bytes": 93595,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8929-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_8929-15.pdf",
+      "size_bytes": 1236345,
+      "size_mb": 1.179,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9024-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9024-22.pdf",
+      "size_bytes": 165333,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9130-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9130-16.pdf",
+      "size_bytes": 1610317,
+      "size_mb": 1.536,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9271-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9271-20.pdf",
+      "size_bytes": 483575,
+      "size_mb": 0.461,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9278-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9278-22.pdf",
+      "size_bytes": 173384,
+      "size_mb": 0.165,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9456-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_9456-15.pdf",
+      "size_bytes": 573535,
+      "size_mb": 0.547,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0244-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0244-18.pdf",
+      "size_bytes": 92156,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0746-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0746-18.pdf",
+      "size_bytes": 1038961,
+      "size_mb": 0.991,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0849-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0849-18.pdf",
+      "size_bytes": 278706,
+      "size_mb": 0.266,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0932-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_0932-18.pdf",
+      "size_bytes": 92375,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_09892-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_09892-19.pdf",
+      "size_bytes": 4108216,
+      "size_mb": 3.918,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_10337-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_10337-19.pdf",
+      "size_bytes": 1231814,
+      "size_mb": 1.175,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_1199-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_1199-18.pdf",
+      "size_bytes": 93046,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_1344-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_1344-18.pdf",
+      "size_bytes": 92772,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_2035-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_2035-18.pdf",
+      "size_bytes": 95581,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_2278-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_2278-18.pdf",
+      "size_bytes": 96960,
+      "size_mb": 0.092,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_2392-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_2392-18.pdf",
+      "size_bytes": 95122,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_3009-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_3009-18.pdf",
+      "size_bytes": 1662016,
+      "size_mb": 1.585,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_4573-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_4573-19.pdf",
+      "size_bytes": 95096,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_5275-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_5275-19.pdf",
+      "size_bytes": 102380,
+      "size_mb": 0.098,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_5453-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_5453-19.pdf",
+      "size_bytes": 3160252,
+      "size_mb": 3.014,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_6016-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_6016-19.pdf",
+      "size_bytes": 95787,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_6113-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_6113-19.pdf",
+      "size_bytes": 8993340,
+      "size_mb": 8.577,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_6861-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_6861-19.pdf",
+      "size_bytes": 60261,
+      "size_mb": 0.057,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_7490-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_7490-19.pdf",
+      "size_bytes": 176236,
+      "size_mb": 0.168,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_7627-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_7627-19.pdf",
+      "size_bytes": 4836704,
+      "size_mb": 4.613,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_7856-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_7856-19.pdf",
+      "size_bytes": 276964,
+      "size_mb": 0.264,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_8364-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_8364-19.pdf",
+      "size_bytes": 187869,
+      "size_mb": 0.179,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_8815-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_8815-19.pdf",
+      "size_bytes": 63643,
+      "size_mb": 0.061,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_8911-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_8911-19.pdf",
+      "size_bytes": 165573,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_9200-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231213/Dispo_MSYDS_9200-19.pdf",
+      "size_bytes": 83683,
+      "size_mb": 0.08,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0160-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0160-16.pdf",
+      "size_bytes": 337740,
+      "size_mb": 0.322,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0172-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0172-16.pdf",
+      "size_bytes": 212608,
+      "size_mb": 0.203,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0219-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0219-20.pdf",
+      "size_bytes": 1951299,
+      "size_mb": 1.861,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0350-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0350-12.pdf",
+      "size_bytes": 223792,
+      "size_mb": 0.213,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0393-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0393-17.pdf",
+      "size_bytes": 697927,
+      "size_mb": 0.666,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0507-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0507-16.pdf",
+      "size_bytes": 298376,
+      "size_mb": 0.285,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0510-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0510-12.pdf",
+      "size_bytes": 91730,
+      "size_mb": 0.087,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0518-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0518-14.pdf",
+      "size_bytes": 431375,
+      "size_mb": 0.411,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0533-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0533-16.pdf",
+      "size_bytes": 55691,
+      "size_mb": 0.053,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0550-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0550-14.pdf",
+      "size_bytes": 653257,
+      "size_mb": 0.623,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0614-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0614-17.pdf",
+      "size_bytes": 85721,
+      "size_mb": 0.082,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0707-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0707-15.pdf",
+      "size_bytes": 133987,
+      "size_mb": 0.128,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0721-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0721-20.pdf",
+      "size_bytes": 23659,
+      "size_mb": 0.023,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0787-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0787-15.pdf",
+      "size_bytes": 209161,
+      "size_mb": 0.199,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0789-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0789-13.pdf",
+      "size_bytes": 26143,
+      "size_mb": 0.025,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0847-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_0847-23.pdf",
+      "size_bytes": 165160,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_09824-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_09824-23.pdf",
+      "size_bytes": 2285751,
+      "size_mb": 2.18,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_09826-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_09826-23.pdf",
+      "size_bytes": 164932,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_10021-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_10021-23.pdf",
+      "size_bytes": 165446,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_10169-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_10169-23.pdf",
+      "size_bytes": 2270130,
+      "size_mb": 2.165,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_10284-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_10284-23.pdf",
+      "size_bytes": 165109,
+      "size_mb": 0.157,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1030-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1030-22.pdf",
+      "size_bytes": 323124,
+      "size_mb": 0.308,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1043-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1043-17.pdf",
+      "size_bytes": 177244,
+      "size_mb": 0.169,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1109-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1109-17.pdf",
+      "size_bytes": 1144970,
+      "size_mb": 1.092,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1127-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1127-15.pdf",
+      "size_bytes": 347495,
+      "size_mb": 0.331,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1139-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1139-13.pdf",
+      "size_bytes": 254979,
+      "size_mb": 0.243,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1141-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1141-15.pdf",
+      "size_bytes": 97326,
+      "size_mb": 0.093,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_11495-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_11495-16.pdf",
+      "size_bytes": 49995,
+      "size_mb": 0.048,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_11737-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_11737-17.pdf",
+      "size_bytes": 160740,
+      "size_mb": 0.153,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_11981-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_11981-16.pdf",
+      "size_bytes": 1655075,
+      "size_mb": 1.578,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12087-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12087-17.pdf",
+      "size_bytes": 92163,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12158-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12158-17.pdf",
+      "size_bytes": 99944,
+      "size_mb": 0.095,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12620-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12620-17.pdf",
+      "size_bytes": 94002,
+      "size_mb": 0.09,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12621-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12621-17.pdf",
+      "size_bytes": 132549,
+      "size_mb": 0.126,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1274-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1274-15.pdf",
+      "size_bytes": 125660,
+      "size_mb": 0.12,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12870-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12870-16.pdf",
+      "size_bytes": 740781,
+      "size_mb": 0.706,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12969-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_12969-16.pdf",
+      "size_bytes": 969126,
+      "size_mb": 0.924,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1400-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1400-13.pdf",
+      "size_bytes": 932379,
+      "size_mb": 0.889,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_14192-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_14192-16.pdf",
+      "size_bytes": 49003,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1456-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1456-16.pdf",
+      "size_bytes": 65536,
+      "size_mb": 0.062,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1530-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1530-15.pdf",
+      "size_bytes": 419597,
+      "size_mb": 0.4,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1645-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1645-15.pdf",
+      "size_bytes": 300485,
+      "size_mb": 0.287,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1669-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1669-12.pdf",
+      "size_bytes": 76066,
+      "size_mb": 0.073,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1675-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1675-15.pdf",
+      "size_bytes": 55210,
+      "size_mb": 0.053,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1717-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1717-14.pdf",
+      "size_bytes": 92054,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1723-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1723-20.pdf",
+      "size_bytes": 167345,
+      "size_mb": 0.16,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1756-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1756-22.pdf",
+      "size_bytes": 165035,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1802-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1802-12.pdf",
+      "size_bytes": 377385,
+      "size_mb": 0.36,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1837-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1837-14.pdf",
+      "size_bytes": 81261,
+      "size_mb": 0.077,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1920-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1920-12.pdf",
+      "size_bytes": 888880,
+      "size_mb": 0.848,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1949-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1949-20.pdf",
+      "size_bytes": 165310,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1973-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1973-17.pdf",
+      "size_bytes": 66617,
+      "size_mb": 0.064,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1986-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_1986-23.pdf",
+      "size_bytes": 165020,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2065-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2065-22.pdf",
+      "size_bytes": 165435,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2077-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2077-17.pdf",
+      "size_bytes": 52930,
+      "size_mb": 0.05,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2079-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2079-15.pdf",
+      "size_bytes": 162671,
+      "size_mb": 0.155,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2091-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2091-21.pdf",
+      "size_bytes": 165073,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2152-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2152-21.pdf",
+      "size_bytes": 167786,
+      "size_mb": 0.16,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2209-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2209-23.pdf",
+      "size_bytes": 1624095,
+      "size_mb": 1.549,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2217-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2217-13.pdf",
+      "size_bytes": 448020,
+      "size_mb": 0.427,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2219-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2219-21.pdf",
+      "size_bytes": 165089,
+      "size_mb": 0.157,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2220-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2220-21.pdf",
+      "size_bytes": 165355,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2337-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2337-21.pdf",
+      "size_bytes": 4645319,
+      "size_mb": 4.43,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2351-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2351-23.pdf",
+      "size_bytes": 5615626,
+      "size_mb": 5.355,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2460-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2460-20.pdf",
+      "size_bytes": 165466,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2490-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2490-16.pdf",
+      "size_bytes": 49861,
+      "size_mb": 0.048,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2552-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2552-13.pdf",
+      "size_bytes": 100076,
+      "size_mb": 0.095,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2568-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2568-21.pdf",
+      "size_bytes": 165640,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2678-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2678-20.pdf",
+      "size_bytes": 6745258,
+      "size_mb": 6.433,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2694-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2694-13.pdf",
+      "size_bytes": 633219,
+      "size_mb": 0.604,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2756-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2756-17.pdf",
+      "size_bytes": 54918,
+      "size_mb": 0.052,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2789-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2789-14.pdf",
+      "size_bytes": 64378,
+      "size_mb": 0.061,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2821-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2821-15.pdf",
+      "size_bytes": 97179,
+      "size_mb": 0.093,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2910-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2910-12.pdf",
+      "size_bytes": 204667,
+      "size_mb": 0.195,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2993-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_2993-12.pdf",
+      "size_bytes": 184320,
+      "size_mb": 0.176,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3021-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3021-13.pdf",
+      "size_bytes": 141235,
+      "size_mb": 0.135,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3090-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3090-13.pdf",
+      "size_bytes": 55237,
+      "size_mb": 0.053,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3117-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3117-20.pdf",
+      "size_bytes": 165557,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3120-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3120-16.pdf",
+      "size_bytes": 58635,
+      "size_mb": 0.056,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3239-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3239-14.pdf",
+      "size_bytes": 77397,
+      "size_mb": 0.074,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3390-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3390-14.pdf",
+      "size_bytes": 2149079,
+      "size_mb": 2.05,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3411-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3411-12.pdf",
+      "size_bytes": 210360,
+      "size_mb": 0.201,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3411-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3411-18.pdf",
+      "size_bytes": 92859,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3413-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3413-23.pdf",
+      "size_bytes": 165558,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3442-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3442-16.pdf",
+      "size_bytes": 115999,
+      "size_mb": 0.111,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3512-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3512-16.pdf",
+      "size_bytes": 51292,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3717-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3717-17.pdf",
+      "size_bytes": 59071,
+      "size_mb": 0.056,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3727-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3727-23.pdf",
+      "size_bytes": 140939,
+      "size_mb": 0.134,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3739-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3739-21.pdf",
+      "size_bytes": 165046,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3792-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3792-20.pdf",
+      "size_bytes": 165067,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3860-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3860-21.pdf",
+      "size_bytes": 165452,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3907-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3907-15.pdf",
+      "size_bytes": 47831,
+      "size_mb": 0.046,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3923-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_3923-15.pdf",
+      "size_bytes": 45202,
+      "size_mb": 0.043,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4010-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4010-15.pdf",
+      "size_bytes": 46529,
+      "size_mb": 0.044,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4021-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4021-22.pdf",
+      "size_bytes": 165033,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4027-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4027-12.pdf",
+      "size_bytes": 36229,
+      "size_mb": 0.035,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4104-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4104-12.pdf",
+      "size_bytes": 359390,
+      "size_mb": 0.343,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4232-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4232-12.pdf",
+      "size_bytes": 44780,
+      "size_mb": 0.043,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4285-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4285-14.pdf",
+      "size_bytes": 59279,
+      "size_mb": 0.057,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4298-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4298-13.pdf",
+      "size_bytes": 376543,
+      "size_mb": 0.359,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4431-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4431-21.pdf",
+      "size_bytes": 165722,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4455-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4455-17.pdf",
+      "size_bytes": 981686,
+      "size_mb": 0.936,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4466-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4466-17.pdf",
+      "size_bytes": 145700,
+      "size_mb": 0.139,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4526-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4526-18.pdf",
+      "size_bytes": 95200,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4552-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4552-20.pdf",
+      "size_bytes": 1366192,
+      "size_mb": 1.303,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4562-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4562-15.pdf",
+      "size_bytes": 47244,
+      "size_mb": 0.045,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4745-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4745-16.pdf",
+      "size_bytes": 80734,
+      "size_mb": 0.077,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4779-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4779-15.pdf",
+      "size_bytes": 510101,
+      "size_mb": 0.486,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4806-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4806-22.pdf",
+      "size_bytes": 165008,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4813-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4813-14.pdf",
+      "size_bytes": 245760,
+      "size_mb": 0.234,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4823-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4823-16.pdf",
+      "size_bytes": 1555726,
+      "size_mb": 1.484,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4863-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4863-14.pdf",
+      "size_bytes": 114688,
+      "size_mb": 0.109,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4892-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4892-17.pdf",
+      "size_bytes": 56405,
+      "size_mb": 0.054,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4900-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4900-17.pdf",
+      "size_bytes": 136312,
+      "size_mb": 0.13,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4909-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4909-23.pdf",
+      "size_bytes": 165686,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4917-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_4917-12.pdf",
+      "size_bytes": 434843,
+      "size_mb": 0.415,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5003-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5003-23.pdf",
+      "size_bytes": 165544,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5065-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5065-14.pdf",
+      "size_bytes": 49152,
+      "size_mb": 0.047,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5134-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5134-21.pdf",
+      "size_bytes": 165596,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5152-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5152-14.pdf",
+      "size_bytes": 278461,
+      "size_mb": 0.266,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5179-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5179-12.pdf",
+      "size_bytes": 65799,
+      "size_mb": 0.063,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5221-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5221-20.pdf",
+      "size_bytes": 88113,
+      "size_mb": 0.084,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5378-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5378-13.pdf",
+      "size_bytes": 220843,
+      "size_mb": 0.211,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5419-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5419-17.pdf",
+      "size_bytes": 71417,
+      "size_mb": 0.068,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5438-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5438-13.pdf",
+      "size_bytes": 176730,
+      "size_mb": 0.169,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5476-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5476-13.pdf",
+      "size_bytes": 350109,
+      "size_mb": 0.334,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5497-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5497-16.pdf",
+      "size_bytes": 57983,
+      "size_mb": 0.055,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5500-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5500-13.pdf",
+      "size_bytes": 527030,
+      "size_mb": 0.503,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5508-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5508-13.pdf",
+      "size_bytes": 84510,
+      "size_mb": 0.081,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5562-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5562-17.pdf",
+      "size_bytes": 57565,
+      "size_mb": 0.055,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5820-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5820-20.pdf",
+      "size_bytes": 164856,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5825-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5825-20.pdf",
+      "size_bytes": 164843,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5831-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5831-17.pdf",
+      "size_bytes": 52693,
+      "size_mb": 0.05,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5851-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5851-18.pdf",
+      "size_bytes": 94380,
+      "size_mb": 0.09,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5916-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_5916-20.pdf",
+      "size_bytes": 164843,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6008-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6008-23.pdf",
+      "size_bytes": 173559,
+      "size_mb": 0.166,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6094-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6094-16.pdf",
+      "size_bytes": 528873,
+      "size_mb": 0.504,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6150-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6150-12.pdf",
+      "size_bytes": 375024,
+      "size_mb": 0.358,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6166-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6166-14.pdf",
+      "size_bytes": 68258,
+      "size_mb": 0.065,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6184-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6184-17.pdf",
+      "size_bytes": 50887,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6374-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6374-15.pdf",
+      "size_bytes": 51461,
+      "size_mb": 0.049,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6471-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6471-17.pdf",
+      "size_bytes": 649418,
+      "size_mb": 0.619,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6508-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6508-14.pdf",
+      "size_bytes": 71917,
+      "size_mb": 0.069,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6533-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6533-17.pdf",
+      "size_bytes": 69544,
+      "size_mb": 0.066,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6553-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6553-23.pdf",
+      "size_bytes": 165422,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6622-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6622-16.pdf",
+      "size_bytes": 649654,
+      "size_mb": 0.62,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6695-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6695-14.pdf",
+      "size_bytes": 216277,
+      "size_mb": 0.206,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6715-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6715-20.pdf",
+      "size_bytes": 164884,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6764-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6764-14.pdf",
+      "size_bytes": 132475,
+      "size_mb": 0.126,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6787-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6787-22.pdf",
+      "size_bytes": 165040,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6820-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6820-15.pdf",
+      "size_bytes": 125273,
+      "size_mb": 0.119,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6927-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6927-12.pdf",
+      "size_bytes": 56622,
+      "size_mb": 0.054,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6953-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6953-20.pdf",
+      "size_bytes": 165672,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6973-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_6973-14.pdf",
+      "size_bytes": 1466616,
+      "size_mb": 1.399,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7058-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7058-13.pdf",
+      "size_bytes": 86367,
+      "size_mb": 0.082,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7061-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7061-22.pdf",
+      "size_bytes": 2154574,
+      "size_mb": 2.055,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7087-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7087-23.pdf",
+      "size_bytes": 165263,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7108-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7108-21.pdf",
+      "size_bytes": 519626,
+      "size_mb": 0.496,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7112-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7112-20.pdf",
+      "size_bytes": 167448,
+      "size_mb": 0.16,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7134-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7134-20.pdf",
+      "size_bytes": 178771,
+      "size_mb": 0.17,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7192-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7192-21.pdf",
+      "size_bytes": 187246,
+      "size_mb": 0.179,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7305-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7305-17.pdf",
+      "size_bytes": 66946,
+      "size_mb": 0.064,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7350-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7350-14.pdf",
+      "size_bytes": 104140,
+      "size_mb": 0.099,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7395-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7395-15.pdf",
+      "size_bytes": 88667,
+      "size_mb": 0.085,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7491-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7491-20.pdf",
+      "size_bytes": 165001,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7604-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7604-16.pdf",
+      "size_bytes": 117446,
+      "size_mb": 0.112,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7723-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7723-18.pdf",
+      "size_bytes": 91948,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7731-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7731-17.pdf",
+      "size_bytes": 118463,
+      "size_mb": 0.113,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7832-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7832-17.pdf",
+      "size_bytes": 171316,
+      "size_mb": 0.163,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7865-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7865-20.pdf",
+      "size_bytes": 165033,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7871-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7871-20.pdf",
+      "size_bytes": 165087,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7890-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7890-17.pdf",
+      "size_bytes": 2373022,
+      "size_mb": 2.263,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7909-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7909-11.pdf",
+      "size_bytes": 489646,
+      "size_mb": 0.467,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7936-14.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7936-14.pdf",
+      "size_bytes": 457430,
+      "size_mb": 0.436,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7961-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_7961-21.pdf",
+      "size_bytes": 165473,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8088-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8088-18.pdf",
+      "size_bytes": 142027,
+      "size_mb": 0.135,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8091-20.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8091-20.pdf",
+      "size_bytes": 165106,
+      "size_mb": 0.157,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8169-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8169-22.pdf",
+      "size_bytes": 165025,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8393-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8393-16.pdf",
+      "size_bytes": 55338,
+      "size_mb": 0.053,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8431-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8431-21.pdf",
+      "size_bytes": 23911,
+      "size_mb": 0.023,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8492-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8492-16.pdf",
+      "size_bytes": 61998,
+      "size_mb": 0.059,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8532-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8532-18.pdf",
+      "size_bytes": 93181,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8569-21.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8569-21.pdf",
+      "size_bytes": 167256,
+      "size_mb": 0.16,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8677-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8677-15.pdf",
+      "size_bytes": 351976,
+      "size_mb": 0.336,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8945-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8945-15.pdf",
+      "size_bytes": 108931,
+      "size_mb": 0.104,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8996-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_8996-23.pdf",
+      "size_bytes": 165418,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9156-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9156-17.pdf",
+      "size_bytes": 222295,
+      "size_mb": 0.212,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9174-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9174-23.pdf",
+      "size_bytes": 165300,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9326-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9326-16.pdf",
+      "size_bytes": 59286,
+      "size_mb": 0.057,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9512-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9512-22.pdf",
+      "size_bytes": 165454,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9581-15.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_9581-15.pdf",
+      "size_bytes": 61207,
+      "size_mb": 0.058,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_0219-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_0219-18.pdf",
+      "size_bytes": 93218,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_0564-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_0564-19.pdf",
+      "size_bytes": 2141673,
+      "size_mb": 2.042,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_1186-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_1186-18.pdf",
+      "size_bytes": 92338,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_1241-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_1241-19.pdf",
+      "size_bytes": 95714,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_1898-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_1898-18.pdf",
+      "size_bytes": 602993,
+      "size_mb": 0.575,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2282-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2282-19.pdf",
+      "size_bytes": 2219146,
+      "size_mb": 2.116,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2335-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2335-19.pdf",
+      "size_bytes": 93730,
+      "size_mb": 0.089,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2355-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2355-18.pdf",
+      "size_bytes": 145530,
+      "size_mb": 0.139,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2405-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2405-18.pdf",
+      "size_bytes": 1638762,
+      "size_mb": 1.563,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2624-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_2624-19.pdf",
+      "size_bytes": 832830,
+      "size_mb": 0.794,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3000-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3000-18.pdf",
+      "size_bytes": 1650662,
+      "size_mb": 1.574,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3027-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3027-19.pdf",
+      "size_bytes": 3336131,
+      "size_mb": 3.182,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3103-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3103-19.pdf",
+      "size_bytes": 95479,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3235-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3235-19.pdf",
+      "size_bytes": 73656,
+      "size_mb": 0.07,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3594-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3594-19.pdf",
+      "size_bytes": 873573,
+      "size_mb": 0.833,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3786-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3786-19.pdf",
+      "size_bytes": 94658,
+      "size_mb": 0.09,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3858-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_3858-19.pdf",
+      "size_bytes": 95920,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_4818-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_4818-19.pdf",
+      "size_bytes": 95662,
+      "size_mb": 0.091,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_4832-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_4832-19.pdf",
+      "size_bytes": 96745,
+      "size_mb": 0.092,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_5344-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_5344-19.pdf",
+      "size_bytes": 191839,
+      "size_mb": 0.183,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_5753-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_5753-19.pdf",
+      "size_bytes": 6215931,
+      "size_mb": 5.928,
+      "quartile": "Q4",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_8534-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_8534-19.pdf",
+      "size_bytes": 124829,
+      "size_mb": 0.119,
+      "quartile": "Q2",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9064-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9064-19.pdf",
+      "size_bytes": 321065,
+      "size_mb": 0.306,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9325-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9325-19.pdf",
+      "size_bytes": 350321,
+      "size_mb": 0.334,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9406-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9406-19.pdf",
+      "size_bytes": 79578,
+      "size_mb": 0.076,
+      "quartile": "Q1",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9628-19.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20231214/Dispo_MSYDS_9628-19.pdf",
+      "size_bytes": 168383,
+      "size_mb": 0.161,
+      "quartile": "Q3",
+      "year": "2023"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240108/Dispo_10930-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240108/Dispo_10930-23.pdf",
+      "size_bytes": 2015735,
+      "size_mb": 1.922,
+      "quartile": "Q4",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240108/Dispo_11104-23.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240108/Dispo_11104-23.pdf",
+      "size_bytes": 165099,
+      "size_mb": 0.157,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240320/Dispo_8328-22.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240320/Dispo_8328-22.pdf",
+      "size_bytes": 165381,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240401/default/aviso_2024_20240401_default_050122.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240401/default/aviso_2024_20240401_default_050122.pdf",
+      "size_bytes": 165670,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240418/Dispo_0506-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240418/Dispo_0506-24.pdf",
+      "size_bytes": 165435,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240418/Dispo_2565-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240418/Dispo_2565-24.pdf",
+      "size_bytes": 178510,
+      "size_mb": 0.17,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3184-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3184-24.pdf",
+      "size_bytes": 165565,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3219-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3219-24.pdf",
+      "size_bytes": 164891,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3347-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3347-24.pdf",
+      "size_bytes": 164658,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3557-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3557-24.pdf",
+      "size_bytes": 55493335,
+      "size_mb": 52.923,
+      "quartile": "Q4",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3826-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240513/Dispo_3826-24.pdf",
+      "size_bytes": 165026,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240624/Dispo_4610-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240624/Dispo_4610-24.pdf",
+      "size_bytes": 46001,
+      "size_mb": 0.044,
+      "quartile": "Q1",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240624/Dispo_5088-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240624/Dispo_5088-24.pdf",
+      "size_bytes": 164927,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240801/default/aviso_2024_20240801_default_052446.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240801/default/aviso_2024_20240801_default_052446.pdf",
+      "size_bytes": 164862,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240805/Dispo_5098-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240805/Dispo_5098-24.pdf",
+      "size_bytes": 166006,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240805/Dispo_5124-24.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20240805/Dispo_5124-24.pdf",
+      "size_bytes": 178519,
+      "size_mb": 0.17,
+      "quartile": "Q3",
+      "year": "2024"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250101/default/aviso_2025_20250101_default_043717.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250101/default/aviso_2025_20250101_default_043717.pdf",
+      "size_bytes": 165444,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250101/default/aviso_2025_20250101_default_044504.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250101/default/aviso_2025_20250101_default_044504.pdf",
+      "size_bytes": 17078551,
+      "size_mb": 16.287,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250201/default/aviso_2025_20250201_default_045840.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250201/default/aviso_2025_20250201_default_045840.pdf",
+      "size_bytes": 1164160,
+      "size_mb": 1.11,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_1298-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_1298-12.pdf",
+      "size_bytes": 29734,
+      "size_mb": 0.028,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_1679-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_1679-10.pdf",
+      "size_bytes": 804117,
+      "size_mb": 0.767,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_1750-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_1750-10.pdf",
+      "size_bytes": 1068750,
+      "size_mb": 1.019,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_2030-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_2030-12.pdf",
+      "size_bytes": 53227,
+      "size_mb": 0.051,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_2651-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_2651-12.pdf",
+      "size_bytes": 708129,
+      "size_mb": 0.675,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4406-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4406-10.pdf",
+      "size_bytes": 46342,
+      "size_mb": 0.044,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4437-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4437-10.pdf",
+      "size_bytes": 223762,
+      "size_mb": 0.213,
+      "quartile": "Q3",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4539-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4539-10.pdf",
+      "size_bytes": 199889,
+      "size_mb": 0.191,
+      "quartile": "Q3",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4585-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4585-10.pdf",
+      "size_bytes": 689255,
+      "size_mb": 0.657,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4974-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_4974-13.pdf",
+      "size_bytes": 834872,
+      "size_mb": 0.796,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_5210-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_5210-10.pdf",
+      "size_bytes": 37479,
+      "size_mb": 0.036,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_6539-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_6539-12.pdf",
+      "size_bytes": 1011858,
+      "size_mb": 0.965,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_6733-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_6733-10.pdf",
+      "size_bytes": 143091,
+      "size_mb": 0.136,
+      "quartile": "Q2",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_6810-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_6810-10.pdf",
+      "size_bytes": 137201,
+      "size_mb": 0.131,
+      "quartile": "Q2",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_9896-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_9896-16.pdf",
+      "size_bytes": 60145,
+      "size_mb": 0.057,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_MSYDS_0588-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_MSYDS_0588-18.pdf",
+      "size_bytes": 92356,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_MSYDS_0616-18.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250207/Dispo_MSYDS_0616-18.pdf",
+      "size_bytes": 130981,
+      "size_mb": 0.125,
+      "quartile": "Q2",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_0133-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_0133-11.pdf",
+      "size_bytes": 48023,
+      "size_mb": 0.046,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_0156-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_0156-12.pdf",
+      "size_bytes": 567724,
+      "size_mb": 0.541,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_0474-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_0474-11.pdf",
+      "size_bytes": 331064,
+      "size_mb": 0.316,
+      "quartile": "Q3",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_1457-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_1457-12.pdf",
+      "size_bytes": 549118,
+      "size_mb": 0.524,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_1731-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_1731-10.pdf",
+      "size_bytes": 70710,
+      "size_mb": 0.067,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_3985-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_3985-12.pdf",
+      "size_bytes": 505320,
+      "size_mb": 0.482,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4111-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4111-11.pdf",
+      "size_bytes": 676152,
+      "size_mb": 0.645,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4172-11.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4172-11.pdf",
+      "size_bytes": 131731,
+      "size_mb": 0.126,
+      "quartile": "Q2",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4404-13.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4404-13.pdf",
+      "size_bytes": 92332,
+      "size_mb": 0.088,
+      "quartile": "Q2",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4516-10.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_4516-10.pdf",
+      "size_bytes": 33288,
+      "size_mb": 0.032,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_6643-12.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_6643-12.pdf",
+      "size_bytes": 42695,
+      "size_mb": 0.041,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_8635-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_8635-16.pdf",
+      "size_bytes": 2027089,
+      "size_mb": 1.933,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_8650-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_8650-16.pdf",
+      "size_bytes": 63846,
+      "size_mb": 0.061,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_8808-16.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_8808-16.pdf",
+      "size_bytes": 309591,
+      "size_mb": 0.295,
+      "quartile": "Q3",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_9483-17.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250208/Dispo_9483-17.pdf",
+      "size_bytes": 73244,
+      "size_mb": 0.07,
+      "quartile": "Q1",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250508/10356-2024-ANMAT-CONTRATACION_DIRECTA-AN.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250508/10356-2024-ANMAT-CONTRATACION_DIRECTA-AN.pdf",
+      "size_bytes": 165781,
+      "size_mb": 0.158,
+      "quartile": "Q3",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250508/10516-2024-ANMAT-LICITACION-AN.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20250508/10516-2024-ANMAT-LICITACION-AN.pdf",
+      "size_bytes": 169881,
+      "size_mb": 0.162,
+      "quartile": "Q3",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20251031/10642-2024-EVEREX_ARGENTINA_SOCIEDAD_ANONIMA-PROSPECTOS-M.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20251031/10642-2024-EVEREX_ARGENTINA_SOCIEDAD_ANONIMA-PROSPECTOS-M.pdf",
+      "size_bytes": 871099,
+      "size_mb": 0.831,
+      "quartile": "Q4",
+      "year": "2025"
+    },
+    {
+      "src_key": "tenant_anmat/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20251031/10651-2024-OSTEOLIFE_SRL.-CANCELACION-PM.pdf",
+      "dest_key": "tenant_anmat/sample-stratified/51d1efe8-448e-4c58-8e3d-f74df1301e81/documents/20251031/10651-2024-OSTEOLIFE_SRL.-CANCELACION-PM.pdf",
+      "size_bytes": 164941,
+      "size_mb": 0.157,
+      "quartile": "Q2",
+      "year": "2025"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,41 @@
+{
+  "tenant": "tenant_boletin",
+  "prefix": "tenant_boletin/sample-stratified/",
+  "muestra": "estratificada_por_cuartiles_tamaño",
+  "archivos_solicitados": 500,
+  "tiempo_total_ejecucion_sec": 129,
+  "tiempo_promedio_por_archivo_sec": 0.098,
+  "size_promedio_archivo_bytes": 219334,
+  "size_promedio_archivo_mb": 0.209,
+  "size_total_mb": 104.59,
+  "hardware": {
+    "vcpu": 4,
+    "ram_gb": 8,
+    "workers_paralelos": 4,
+    "launch_type": "FARGATE",
+    "region": "us-east-1"
+  },
+  "archivos_procesados_ok": 500,
+  "archivos_fallidos": 0,
+  "costo_estimado_usd": 0.004566,
+  "costo_promedio_por_archivo_usd": 9e-06,
+  "extrapolacion_corpus_completo": {
+    "poblacion_pdf_count": 77237,
+    "poblacion_avg_size_mb": 0.22,
+    "muestra_pct_poblacion": 0.647,
+    "costo_estimado_total_usd": 0.71,
+    "tiempo_estimado_extraccion_sec": 7599.0,
+    "tiempo_estimado_extraccion_horas": 2.11
+  },
+  "detalle": {
+    "ecs_task_duration_sec": 83.24,
+    "extraccion_wall_time_sec": 49.19,
+    "cpu_time_acumulado_sec": 139.52,
+    "avg_cpu_sec_por_archivo": 0.279,
+    "archivos_empty_text": 0,
+    "archivos_error": 0,
+    "success_rate_pct": 100.0,
+    "pricing_model": "Fargate on-demand Linux x86 us-east-1",
+    "ecs_task_arn": "arn:aws:ecs:us-east-1:615216531593:task/rag-extractor-poc-dev/be38ee2fd3bf49099533e5047be98258"
+  }
+}

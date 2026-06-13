@@ -1,0 +1,32 @@
+{
+  "tenant": "tenant_anmat",
+  "prefix": "tenant_anmat/",
+  "archivos_solicitados": 100,
+  "tiempo_total_ejecucion_sec": 190,
+  "tiempo_promedio_por_archivo_sec": 1.19,
+  "size_promedio_archivo_bytes": 453673,
+  "size_promedio_archivo_mb": 0.433,
+  "size_total_mb": 43.27,
+  "hardware": {
+    "vcpu": 4,
+    "ram_gb": 8,
+    "workers_paralelos": 4,
+    "launch_type": "FARGATE",
+    "region": "us-east-1"
+  },
+  "archivos_procesados_ok": 100,
+  "archivos_fallidos": 0,
+  "costo_estimado_usd": 0.00783,
+  "costo_promedio_por_archivo_usd": 7.8e-05,
+  "detalle": {
+    "ecs_task_duration_sec": 142.73,
+    "extraccion_wall_time_sec": 118.74,
+    "cpu_time_acumulado_sec": 456.43,
+    "avg_cpu_sec_por_archivo": 4.56,
+    "archivos_empty_text": 0,
+    "archivos_error": 0,
+    "success_rate_pct": 100.0,
+    "pricing_model": "Fargate on-demand Linux x86 us-east-1",
+    "ecs_task_arn": "arn:aws:ecs:us-east-1:615216531593:task/rag-extractor-poc-dev/12ad19ad772a44e5a058910f3b18e943"
+  }
+}

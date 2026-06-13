@@ -1,0 +1,55 @@
+{
+  "tenant": "tenant_anmat",
+  "prefix": "tenant_anmat/sample-stratified/",
+  "muestra": "estratificada_por_cuartiles_tamaño",
+  "archivos_solicitados": 500,
+  "tiempo_total_ejecucion_sec": 252,
+  "tiempo_promedio_por_archivo_sec": 0.376,
+  "size_promedio_archivo_bytes": 802880,
+  "size_promedio_archivo_mb": 0.766,
+  "size_total_mb": 382.84,
+  "hardware": {
+    "vcpu": 4,
+    "ram_gb": 8,
+    "workers_paralelos": 4,
+    "max_file_size_mb": 30,
+    "launch_type": "FARGATE",
+    "region": "us-east-1"
+  },
+  "archivos_procesados_ok": 437,
+  "archivos_fallidos": 60,
+  "archivos_skipped_too_large": 3,
+  "archivos_empty_text": 60,
+  "costo_estimado_usd": 0.011614,
+  "costo_promedio_por_archivo_usd": 2.3e-05,
+  "extrapolacion_corpus_completo": {
+    "poblacion_pdf_count": 261090,
+    "poblacion_avg_size_mb": 0.673,
+    "muestra_pct_poblacion": 0.192,
+    "costo_estimado_total_usd": 6.06,
+    "tiempo_estimado_extraccion_sec": 98060.0,
+    "tiempo_estimado_extraccion_horas": 27.24
+  },
+  "detalle": {
+    "ecs_task_duration_sec": 211.72,
+    "extraccion_wall_time_sec": 187.79,
+    "cpu_time_acumulado_sec": 723.85,
+    "avg_cpu_sec_por_archivo": 1.45,
+    "success_rate_pct": 87.4,
+    "skipped_files": [
+      {
+        "key": "aviso_2020_20200101_default_213559.pdf",
+        "size_mb": 44.56
+      },
+      {
+        "key": "Dispo_5508-23.pdf",
+        "size_mb": 57.6
+      },
+      {
+        "key": "Dispo_3557-24.pdf",
+        "size_mb": 52.92
+      }
+    ],
+    "ecs_task_arn": "arn:aws:ecs:us-east-1:615216531593:task/rag-extractor-poc-dev/d108a8d91687441b96dd910211d1464a"
+  }
+}
