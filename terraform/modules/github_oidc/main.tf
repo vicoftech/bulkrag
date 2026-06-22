@@ -131,6 +131,16 @@ data "aws_iam_policy_document" "github_actions_deploy" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    sid    = "BulkragPipelineDeploy"
+    effect = "Allow"
+    actions = [
+      "lambda:*",
+      "states:*",
+    ]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_role" "github_actions" {
