@@ -6,9 +6,10 @@ import time
 import boto3
 
 BEDROCK_BATCH_ROLE_ARN = os.environ["BEDROCK_BATCH_ROLE_ARN"]
-MODEL_ID = os.environ.get("BEDROCK_EMBED_MODEL_ID", "cohere.embed-multilingual-v3")
+MODEL_ID = os.environ.get("BEDROCK_EMBED_MODEL_ID", "amazon.titan-embed-text-v2:0")
 POLL_INTERVAL_SEC = int(os.environ.get("BEDROCK_POLL_INTERVAL_SEC", "30"))
 MAX_WAIT_SEC = int(os.environ.get("BEDROCK_MAX_WAIT_SEC", "3600"))
+MIN_BATCH_RECORDS = int(os.environ.get("BEDROCK_MIN_BATCH_RECORDS", "100"))
 
 bedrock = boto3.client("bedrock")
 bedrock_runtime = boto3.client("bedrock-runtime")
@@ -18,7 +19,17 @@ s3 = boto3.client("s3")
 def _job_name(tenant: str, run_id: str, batch_index: int) -> str:
     safe_tenant = tenant.replace("_", "-")
     safe_run_id = run_id.replace("_", "-")
-    return f"bulkrag-{safe_tenant}-{safe_run_id}-b{batch_index}"[:63]
+    suffix = int(time.time()) % 1_000_000
+    return f"bulkrag-{safe_tenant}-{safe_run_id}-b{batch_index}-{suffix}"[:63]
+
+
+def _count_input_records(bucket: str, input_key: str) -> int:
+    obj = s3.get_object(Bucket=bucket, Key=input_key)
+    return sum(
+        1
+        for line in obj["Body"].read().decode("utf-8").splitlines()
+        if line.strip()
+    )
 
 
 def _invoke_sync_embeddings(bucket: str, input_key: str, output_uri: str) -> dict:
@@ -100,16 +111,25 @@ def lambda_handler(event, context):
     input_uri = f"s3://{bucket}/{input_key}"
     output_uri = f"s3://{bucket}/embeddings-output/{tenant}/{run_id}/batch_{batch_index}/"
 
-    try:
-        result = _run_batch_job(job_name, input_uri, output_uri)
-    except bedrock.exceptions.ValidationException as exc:
-        if "Batch inference is not supported" not in str(exc):
-            raise
+    record_count = _count_input_records(bucket, input_key)
+    if record_count < MIN_BATCH_RECORDS:
         result = _invoke_sync_embeddings(bucket, input_key, output_uri)
+        result["batch_skipped_reason"] = (
+            f"records={record_count} < min_batch={MIN_BATCH_RECORDS}"
+        )
+    else:
+        try:
+            result = _run_batch_job(job_name, input_uri, output_uri)
+        except bedrock.exceptions.ValidationException as exc:
+            if "Batch inference is not supported" not in str(exc):
+                raise
+            result = _invoke_sync_embeddings(bucket, input_key, output_uri)
+            result["batch_skipped_reason"] = "model_no_batch_support"
 
     return {
         "job_name": job_name,
         "output_uri": output_uri,
         "batch_index": batch_index,
+        "record_count": record_count,
         **result,
     }

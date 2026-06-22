@@ -45,6 +45,7 @@ resource "aws_iam_role_policy" "bedrock_batch_s3" {
           "bedrock:InvokeModel"
         ]
         Resource = [
+          "arn:aws:bedrock:${var.aws_region}::foundation-model/${var.bedrock_embed_model_id}",
           "arn:aws:bedrock:${var.aws_region}::foundation-model/cohere.embed-multilingual-v3",
           "arn:aws:bedrock:${var.aws_region}::foundation-model/cohere.embed-english-v3"
         ]

@@ -5,12 +5,18 @@ on:
     branches: [main, develop, development]
     paths:
       - "ecs-extractor/**"
+      - "lambdas/**"
+      - "step-functions/**"
+      - "scripts/**"
       - "terraform/**"
       - ".github/workflows/ecs-extractor-poc.yml"
   pull_request:
     branches: [main, development]
     paths:
       - "ecs-extractor/**"
+      - "lambdas/**"
+      - "step-functions/**"
+      - "scripts/**"
       - "terraform/**"
       - ".github/workflows/ecs-extractor-poc.yml"
   workflow_dispatch:
@@ -52,6 +58,9 @@ jobs:
         with:
           terraform_version: "1.8.0"
 
+      - name: Build Lambda packages
+        run: bash scripts/build_lambdas.sh
+
       - name: Prepare tfvars
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: cp terraform.tfvars.github terraform.tfvars
@@ -66,11 +75,15 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ${{ env.TF_WORKING_DIR }}
+        env:
+          TF_VAR_aurora_db_password: ${{ secrets.AURORA_DB_PASSWORD }}
         run: terraform plan -input=false -out=tfplan
 
       - name: Terraform Apply
         if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development') && github.event_name != 'pull_request'
         working-directory: ${{ env.TF_WORKING_DIR }}
+        env:
+          TF_VAR_aurora_db_password: ${{ secrets.AURORA_DB_PASSWORD }}
         run: terraform apply -input=false -auto-approve tfplan
 
   docker:

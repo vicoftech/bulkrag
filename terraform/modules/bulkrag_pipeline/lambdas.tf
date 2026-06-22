@@ -51,13 +51,19 @@ resource "aws_lambda_function" "insert_pgvector" {
   filename         = "${path.module}/../../../lambdas/bulkrag_insert_pgvector/dist/lambda.zip"
   source_code_hash = filebase64sha256("${path.module}/../../../lambdas/bulkrag_insert_pgvector/dist/lambda.zip")
 
+  dynamic "vpc_config" {
+    for_each = local.aurora_enabled ? [1] : []
+    content {
+      subnet_ids         = var.aurora_subnet_ids
+      security_group_ids = [aws_security_group.insert_pgvector_lambda[0].id]
+    }
+  }
+
   environment {
     variables = {
-      RAG_BUCKET_NAME    = var.rag_bucket_name
-      AURORA_SECRET_ARN  = var.aurora_secret_arn
-      AURORA_CLUSTER_ARN = var.aurora_cluster_arn
-      DB_NAME            = var.db_name
-      SKIP_DB_INSERT     = var.skip_db_insert ? "true" : "false"
+      RAG_BUCKET_NAME   = var.rag_bucket_name
+      AURORA_SECRET_ARN = local.aurora_secret_arn
+      SKIP_DB_INSERT    = local.db_insert_disabled ? "true" : "false"
     }
   }
 }
@@ -75,6 +81,7 @@ resource "aws_lambda_function" "run_bedrock_batch" {
   environment {
     variables = {
       BEDROCK_BATCH_ROLE_ARN = var.bedrock_batch_role_arn
+      BEDROCK_EMBED_MODEL_ID = var.bedrock_embed_model_id
     }
   }
 }

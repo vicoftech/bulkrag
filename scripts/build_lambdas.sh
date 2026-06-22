@@ -12,7 +12,13 @@ build_lambda() {
   rm -rf "$dir/dist/build"
   mkdir -p "$dir/dist/build"
 
-  pip install -q -r "$dir/requirements.txt" -t "$dir/dist/build"
+  if [[ "$name" == "bulkrag_insert_pgvector" ]]; then
+    pip install -q -r "$dir/requirements.txt" -t "$dir/dist/build" \
+      --platform manylinux2014_x86_64 --only-binary=:all: --python-version 3.12
+  else
+    pip install -q -r "$dir/requirements.txt" -t "$dir/dist/build"
+  fi
+
   cp "$dir/handler.py" "$dir/dist/build/"
   (cd "$dir/dist/build" && zip -qr "$out" .)
   echo "Built $out"

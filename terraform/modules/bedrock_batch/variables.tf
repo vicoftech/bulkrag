@@ -14,3 +14,8 @@ variable "aws_region" {
 variable "rag_bucket_name" {
   type = string
 }
+
+variable "bedrock_embed_model_id" {
+  type    = string
+  default = "amazon.titan-embed-text-v2:0"
+}

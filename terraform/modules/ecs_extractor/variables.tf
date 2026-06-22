@@ -50,3 +50,29 @@ variable "vpc_id" {
 variable "subnet_ids" {
   type = list(string)
 }
+
+variable "bedrock_embed_model_id" {
+  type        = string
+  default     = "amazon.titan-embed-text-v2:0"
+  description = "Modelo Bedrock para embeddings (debe soportar batch en la region)"
+}
+
+variable "embed_dimensions" {
+  type    = number
+  default = 1024
+}
+
+variable "embed_max_chars" {
+  type    = number
+  default = 12000
+}
+
+variable "chunk_size_tokens" {
+  type    = number
+  default = 1500
+}
+
+variable "chunk_overlap_tokens" {
+  type    = number
+  default = 150
+}

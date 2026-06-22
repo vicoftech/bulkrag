@@ -22,8 +22,13 @@ REGION = os.environ.get("AWS_REGION", "us-east-1")
 WORKER_COUNT = int(os.environ.get("WORKER_COUNT", os.cpu_count() or 1))
 MAX_FILE_SIZE_MB = int(os.environ.get("MAX_FILE_SIZE_MB", "30"))
 MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
-CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE_TOKENS", "250"))
-CHUNK_OVERLAP = int(os.environ.get("CHUNK_OVERLAP_TOKENS", "25"))
+CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE_TOKENS", "1500"))
+CHUNK_OVERLAP = int(os.environ.get("CHUNK_OVERLAP_TOKENS", "150"))
+BEDROCK_EMBED_MODEL_ID = os.environ.get(
+    "BEDROCK_EMBED_MODEL_ID", "amazon.titan-embed-text-v2:0"
+)
+EMBED_DIMENSIONS = int(os.environ.get("EMBED_DIMENSIONS", "1024"))
+EMBED_MAX_CHARS = int(os.environ.get("EMBED_MAX_CHARS", "12000"))
 
 s3 = boto3.client("s3", region_name=REGION)
 
@@ -34,9 +39,19 @@ def read_manifest() -> list[str]:
     return data["keys"]
 
 
+def _model_input_for_chunk(chunk: str) -> dict:
+    if "cohere" in BEDROCK_EMBED_MODEL_ID:
+        return {"texts": [chunk], "input_type": "search_document"}
+    return {
+        "inputText": chunk,
+        "dimensions": EMBED_DIMENSIONS,
+        "normalize": True,
+    }
+
+
 def chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]:
-    """Chunking por caracteres (Cohere embed limita ~2048 chars por texto)."""
-    max_chars = min(chunk_size * 4, 1800)
+    """Chunking por caracteres (~4 chars/token, capped por modelo de embedding)."""
+    max_chars = min(chunk_size * 4, EMBED_MAX_CHARS)
     overlap_chars = min(overlap * 4, max_chars // 5)
     if not text.strip():
         return []
@@ -127,10 +142,7 @@ def _write_chunks_jsonl(worker_s3, bucket: str, pdf_key: str, full_text: str) ->
             json.dumps(
                 {
                     "recordId": chunk_id,
-                    "modelInput": {
-                        "texts": [chunk],
-                        "input_type": "search_document",
-                    },
+                    "modelInput": _model_input_for_chunk(chunk),
                     "_meta": {
                         "source_key": pdf_key,
                         "chunk_index": i,

@@ -108,8 +108,11 @@ resource "aws_ecs_task_definition" "extractor" {
       { name = "AWS_REGION", value = var.aws_region },
       { name = "WORKER_COUNT", value = tostring(var.worker_count) },
       { name = "MAX_FILE_SIZE_MB", value = tostring(var.max_file_size_mb) },
-      { name = "CHUNK_SIZE_TOKENS", value = "250" },
-      { name = "CHUNK_OVERLAP_TOKENS", value = "25" }
+      { name = "CHUNK_SIZE_TOKENS", value = tostring(var.chunk_size_tokens) },
+      { name = "CHUNK_OVERLAP_TOKENS", value = tostring(var.chunk_overlap_tokens) },
+      { name = "BEDROCK_EMBED_MODEL_ID", value = var.bedrock_embed_model_id },
+      { name = "EMBED_DIMENSIONS", value = tostring(var.embed_dimensions) },
+      { name = "EMBED_MAX_CHARS", value = tostring(var.embed_max_chars) }
     ]
     logConfiguration = {
       logDriver = "awslogs"

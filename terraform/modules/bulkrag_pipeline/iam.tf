@@ -15,6 +15,12 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_vpc" {
+  count      = local.aurora_enabled ? 1 : 0
+  role       = aws_iam_role.bulkrag_lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
 resource "aws_iam_role_policy" "lambda_s3" {
   name = "bulkrag-lambda-s3-policy"
   role = aws_iam_role.bulkrag_lambda_role.id
@@ -31,24 +37,17 @@ resource "aws_iam_role_policy" "lambda_s3" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_rds_data" {
-  count = var.aurora_cluster_arn != "" ? 1 : 0
-  name  = "bulkrag-lambda-rds-data-policy"
+resource "aws_iam_role_policy" "lambda_secrets" {
+  count = local.aurora_enabled ? 1 : 0
+  name  = "bulkrag-lambda-secrets-policy"
   role  = aws_iam_role.bulkrag_lambda_role.id
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
-      {
-        Effect   = "Allow"
-        Action   = ["rds-data:BatchExecuteStatement", "rds-data:ExecuteStatement"]
-        Resource = var.aurora_cluster_arn
-      },
-      {
-        Effect   = "Allow"
-        Action   = ["secretsmanager:GetSecretValue"]
-        Resource = var.aurora_secret_arn
-      }
-    ]
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["secretsmanager:GetSecretValue"]
+      Resource = local.aurora_secret_arn
+    }]
   })
 }
 

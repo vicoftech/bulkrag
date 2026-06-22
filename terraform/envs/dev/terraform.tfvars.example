@@ -6,3 +6,15 @@
 # task_cpu        = 4096   # 4 vCPU — 1 worker por vCPU
 # task_memory     = 8192   # 8 GB — ~2 GB por worker para PDFs grandes (~100 MB)
 # worker_count    = 4      # PDFs en paralelo por task
+#
+# Aurora pgvector (insert_pgvector Lambda)
+# skip_db_insert           = false
+# bedrock_embed_model_id   = "amazon.titan-embed-text-v2:0"
+# aurora_host              = "aurora-pg-asap-dev.cluster-xxxx.us-east-1.rds.amazonaws.com"
+# aurora_db_name           = "postgress"
+# aurora_db_user           = "postgres"
+# aurora_db_password       = "CHANGEME"
+# aurora_vpc_id            = "vpc-xxxxxxxx"
+# aurora_subnet_ids        = ["subnet-xxxxxxxx", "subnet-yyyyyyyy"]
+# aurora_security_group_id      = "sg-xxxxxxxx"
+# aurora_vpce_security_group_id = "sg-xxxxxxxx"  # SG del VPC endpoint de Secrets Manager

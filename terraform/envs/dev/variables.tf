@@ -69,20 +69,57 @@ variable "terraform_state_lock_table" {
 
 variable "skip_db_insert" {
   type    = bool
-  default = true
+  default = false
 }
 
-variable "aurora_cluster_arn" {
+variable "aurora_host" {
   type    = string
   default = ""
 }
 
-variable "aurora_secret_arn" {
+variable "aurora_db_name" {
   type    = string
   default = ""
 }
 
-variable "db_name" {
+variable "aurora_db_user" {
+  type    = string
+  default = "postgres"
+}
+
+variable "aurora_db_password" {
+  type      = string
+  sensitive = true
+  default   = ""
+}
+
+variable "aurora_vpc_id" {
   type    = string
   default = ""
+}
+
+variable "aurora_subnet_ids" {
+  type    = list(string)
+  default = []
+}
+
+variable "aurora_security_group_id" {
+  type    = string
+  default = ""
+}
+
+variable "aurora_existing_secret_arn" {
+  type    = string
+  default = ""
+}
+
+variable "aurora_vpce_security_group_id" {
+  type    = string
+  default = ""
+}
+
+variable "bedrock_embed_model_id" {
+  type        = string
+  default     = "amazon.titan-embed-text-v2:0"
+  description = "Modelo Bedrock para embeddings batch (us-east-1: Titan v2, Nova multimodal)"
 }

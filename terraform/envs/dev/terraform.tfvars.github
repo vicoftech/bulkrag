@@ -8,3 +8,11 @@ github_repository          = "vicoftech/bulkrag"
 github_actions_environment = "development"
 terraform_state_bucket     = "bulkrag-terraform-state-615216531593"
 terraform_state_lock_table = "bulkrag-terraform-locks"
+
+skip_db_insert             = false
+aurora_host                = "aurora-pg-asap-dev.cluster-cgxq84qu0b72.us-east-1.rds.amazonaws.com"
+aurora_existing_secret_arn = "arn:aws:secretsmanager:us-east-1:615216531593:secret:prode-mundial/dev/aurora-sync-60iepS"
+aurora_vpc_id              = "vpc-03ce6b69e92024f86"
+aurora_subnet_ids          = ["subnet-01ad385e56ce2a2b9", "subnet-0778965dc1b21dfb7"]
+aurora_security_group_id      = "sg-0ff149c197120e05a"
+aurora_vpce_security_group_id = "sg-0761f175dbe99e592"
