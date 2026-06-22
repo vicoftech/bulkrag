@@ -8,3 +8,5 @@ terraform/bootstrap/terraform.tfstate
 __pycache__/
 *.pyc
 *.tfplan
+terraform/envs/*/tfplan
+lambdas/**/dist/build/

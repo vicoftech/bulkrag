@@ -33,3 +33,11 @@ output "github_actions_role_arn" {
 output "github_oidc_sub" {
   value = module.github_oidc.github_oidc_sub
 }
+
+output "bulkrag_pipeline_arn" {
+  value = module.bulkrag_pipeline.state_machine_arn
+}
+
+output "bulkrag_pipeline_name" {
+  value = module.bulkrag_pipeline.state_machine_name
+}

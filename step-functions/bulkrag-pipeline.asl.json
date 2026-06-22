@@ -1,0 +1,159 @@
+{
+  "Comment": "Bulkrag — Pipeline completo de carga masiva RAG",
+  "StartAt": "ListPdfsAndBuildManifests",
+  "States": {
+    "ListPdfsAndBuildManifests": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${ListManifestsLambdaArn}",
+        "Payload.$": "$"
+      },
+      "ResultSelector": {
+        "run_id.$": "$.Payload.run_id",
+        "tenant.$": "$.Payload.tenant",
+        "bucket.$": "$.Payload.bucket",
+        "total_files.$": "$.Payload.total_files",
+        "manifest_keys.$": "$.Payload.manifest_keys"
+      },
+      "ResultPath": "$.listResult",
+      "Next": "RunExtractionTasks"
+    },
+
+    "RunExtractionTasks": {
+      "Type": "Map",
+      "ItemsPath": "$.listResult.manifest_keys",
+      "MaxConcurrency": 10,
+      "ItemSelector": {
+        "manifest_key.$": "$$.Map.Item.Value",
+        "tenant.$": "$.listResult.tenant",
+        "run_id.$": "$.listResult.run_id",
+        "bucket.$": "$.listResult.bucket"
+      },
+      "ItemProcessor": {
+        "ProcessorConfig": { "Mode": "INLINE" },
+        "StartAt": "RunEcsExtractionTask",
+        "States": {
+          "RunEcsExtractionTask": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::ecs:runTask.sync",
+            "Parameters": {
+              "Cluster": "${EcsClusterArn}",
+              "TaskDefinition": "${EcsTaskDefinitionArn}",
+              "LaunchType": "FARGATE",
+              "NetworkConfiguration": {
+                "AwsvpcConfiguration": {
+                  "Subnets": ${EcsSubnetIds},
+                  "SecurityGroups": ["${EcsSecurityGroupId}"],
+                  "AssignPublicIp": "ENABLED"
+                }
+              },
+              "Overrides": {
+                "ContainerOverrides": [
+                  {
+                    "Name": "extractor",
+                    "Environment": [
+                      { "Name": "MANIFEST_S3_KEY", "Value.$": "$.manifest_key" },
+                      { "Name": "TENANT", "Value.$": "$.tenant" },
+                      { "Name": "RUN_ID", "Value.$": "$.run_id" },
+                      { "Name": "RAG_BUCKET_NAME", "Value.$": "$.bucket" }
+                    ]
+                  }
+                ]
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": ["States.TaskFailed"],
+                "IntervalSeconds": 30,
+                "MaxAttempts": 2,
+                "BackoffRate": 2.0
+              }
+            ],
+            "End": true
+          }
+        }
+      },
+      "ResultPath": "$.extractionResults",
+      "Next": "ConsolidateChunks"
+    },
+
+    "ConsolidateChunks": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${ConsolidateChunksLambdaArn}",
+        "Payload": {
+          "bucket.$": "$.listResult.bucket",
+          "tenant.$": "$.listResult.tenant",
+          "run_id.$": "$.listResult.run_id"
+        }
+      },
+      "ResultSelector": {
+        "batch_input_keys.$": "$.Payload.batch_input_keys",
+        "total_chunks.$": "$.Payload.total_chunks"
+      },
+      "ResultPath": "$.consolidateResult",
+      "Next": "LaunchBedrockBatchJobs"
+    },
+
+    "LaunchBedrockBatchJobs": {
+      "Type": "Map",
+      "ItemsPath": "$.consolidateResult.batch_input_keys",
+      "MaxConcurrency": 5,
+      "ItemSelector": {
+        "input_key.$": "$$.Map.Item.Value",
+        "tenant.$": "$.listResult.tenant",
+        "run_id.$": "$.listResult.run_id",
+        "bucket.$": "$.listResult.bucket",
+        "batch_index.$": "$$.Map.Item.Index"
+      },
+      "ItemProcessor": {
+        "ProcessorConfig": { "Mode": "INLINE" },
+        "StartAt": "RunBedrockBatchJob",
+        "States": {
+          "RunBedrockBatchJob": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "${RunBedrockBatchLambdaArn}",
+              "Payload": {
+                "bucket.$": "$.bucket",
+                "tenant.$": "$.tenant",
+                "run_id.$": "$.run_id",
+                "input_key.$": "$.input_key",
+                "batch_index.$": "$.batch_index"
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+                "IntervalSeconds": 30,
+                "MaxAttempts": 2,
+                "BackoffRate": 2.0
+              }
+            ],
+            "End": true
+          }
+        }
+      },
+      "ResultPath": "$.bedrockResults",
+      "Next": "InsertVectorsToPgvector"
+    },
+
+    "InsertVectorsToPgvector": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${InsertPgvectorLambdaArn}",
+        "Payload": {
+          "bucket.$": "$.listResult.bucket",
+          "tenant.$": "$.listResult.tenant",
+          "run_id.$": "$.listResult.run_id"
+        }
+      },
+      "ResultPath": "$.finalResult",
+      "End": true
+    }
+  }
+}

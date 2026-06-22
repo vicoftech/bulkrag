@@ -1,0 +1,1080 @@
+---
+description: Especificación de infraestructura y código para el pipeline completo de carga masiva RAG (bulkrag) — extracción de PDFs con ECS Fargate, chunking, generación de JSONL, embeddings batch con Cohere en Bedrock, e inserción en pgvector. Orquestado con Step Functions usando integraciones .sync para esperar ECS y Bedrock sin polling manual. Cubre Terraform, Lambdas Python, y definición ASL del state machine.
+globs:
+  - "lambdas/bulkrag_*/**"
+  - "terraform/modules/bulkrag_pipeline/**"
+  - "terraform/modules/ecs_extractor/**"
+  - "step-functions/bulkrag-pipeline.asl.json"
+alwaysApply: false
+---
+
+# Bulkrag — Pipeline Completo de Carga Masiva RAG
+
+## Contexto
+
+Continuación del POC documentado en `STEERING.md`. El extractor ECS con pdfplumber fue validado (>90% extracción exitosa en muestra estratificada). Esta spec cubre el pipeline end-to-end: **extracción → chunking → embeddings batch → inserción en pgvector**, orquestado con Step Functions para evitar lanzamientos prematuros o duplicados de batch jobs de Bedrock.
+
+### Por qué Step Functions y no eventos S3 encadenados
+
+Un diseño ingenuo dispara un Lambda de embeddings por cada `.txt` que aparece en `output/`. Para 261K archivos de ANMAT eso generaría decenas de miles de batch jobs individuales de Bedrock — ineficiente y económicamente absurdo (Batch Inference gana valor agrupando miles de records por job).
+
+La solución: el pipeline corre **por demanda** (un lote = un tenant o un sub-conjunto), y Step Functions usa el patrón **`.sync`** para esperar nativamente a que:
+1. Todas las ECS Tasks de extracción terminen, antes de
+2. Consolidar todos los chunks pendientes en JSONL(s) de hasta 50K records, antes de
+3. Lanzar los batch jobs de Bedrock, y esperar a que terminen, antes de
+4. Insertar los vectores resultantes en Aurora pgvector
+
+Sin polling manual, sin Lambdas de espera, con reintentos y manejo de errores declarativo en la definición ASL.
+
+---
+
+## Arquitectura completa
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: invocación manual / EventBridge schedule / API Gateway          │
+│   Input: { "tenant": "tenant_anmat", "prefix": "tenant_anmat/2024/" }    │
+└───────────────────────────────┬────────────────────────────────────────┘
+                                 ▼
+╔════════════════════════════════════════════════════════════════════════╗
+║  STEP FUNCTIONS: bulkrag-pipeline-{env}                                  ║
+║                                                                          ║
+║  [1] ListPdfsAndBuildManifests (Lambda)                                  ║
+║      → lista PDFs del prefix en S3 (paginado)                           ║
+║      → particiona en manifests de N archivos c/u                       ║
+║      → escribe batch-poc/manifests/{tenant}/{run_id}/tanda_N.json       ║
+║      → retorna lista de manifest keys                                   ║
+║                          │                                              ║
+║                          ▼                                              ║
+║  [2] Map: RunExtractionTasks (MaxConcurrency configurable)              ║
+║      ┌──────────────────────────────────────────────────────────┐      ║
+║      │ ECS RunTask .sync — una Task por manifest                 │      ║
+║      │   container: rag-ecs-extractor                            │      ║
+║      │   env: MANIFEST_S3_KEY, WORKER_COUNT=5                    │      ║
+║      │   1 task = hasta 5 workers (ProcessPoolExecutor)           │      ║
+║      │   State Machine espera a StoppedReason de cada task        │      ║
+║      └──────────────────────────────────────────────────────────┘      ║
+║                          │  (espera a que TODAS las tasks terminen)     ║
+║                          ▼                                              ║
+║  [3] ConsolidateChunks (Lambda)                                         ║
+║      → dispara solo tras completar el Map al 100%                       ║
+║      → lee batch-poc/results/{run_id}/*_summary.json (auditoría)       ║
+║      → lista pending-embeddings/{tenant}/{run_id}/*.jsonl               ║
+║      → consolida en lotes de hasta 50,000 records                      ║
+║      → escribe embeddings-input/{tenant}/{run_id}/batch_N.jsonl         ║
+║      → retorna lista de batch input keys                                ║
+║                          │                                              ║
+║                          ▼                                              ║
+║  [4] Map: LaunchBedrockBatchJobs (MaxConcurrency: 5)                    ║
+║      ┌──────────────────────────────────────────────────────────┐      ║
+║      │ Bedrock CreateModelInvocationJob .sync                    │      ║
+║      │   modelId: cohere.embed-multilingual-v3                   │      ║
+║      │   input:  embeddings-input/{tenant}/{run_id}/batch_N.jsonl│      ║
+║      │   output: embeddings-output/{tenant}/{run_id}/batch_N/    │      ║
+║      │   State Machine espera a status Completed/Failed           │      ║
+║      └──────────────────────────────────────────────────────────┘      ║
+║                          │  (espera a que TODOS los jobs terminen)      ║
+║                          ▼                                              ║
+║  [5] InsertVectorsToPgvector (Lambda, posible Map si hay varios batch)  ║
+║      → lee embeddings-output/{tenant}/{run_id}/batch_N/*.jsonl.out      ║
+║      → mapea recordId → chunk_id                                        ║
+║      → bulk UPDATE/INSERT en Aurora pgvector (chunks)                   ║
+║      → escribe pipeline-results/{run_id}/final_summary.json            ║
+║                          │                                              ║
+║                          ▼                                              ║
+║                    [SUCCESS / FAILED]                                   ║
+╚════════════════════════════════════════════════════════════════════════╝
+```
+
+---
+
+## Estructura de archivos
+
+```
+rag-agents/  (repo: vicoftech/bulkrag)
+├── lambdas/
+│   ├── bulkrag_list_manifests/
+│   │   ├── handler.py
+│   │   └── requirements.txt
+│   ├── bulkrag_consolidate_chunks/
+│   │   ├── handler.py
+│   │   └── requirements.txt
+│   └── bulkrag_insert_pgvector/
+│       ├── handler.py
+│       └── requirements.txt
+├── ecs-extractor/
+│   └── extractor/
+│       ├── main.py                ← modificar: agregar chunking inline opcional
+│       ├── requirements.txt
+│       └── Dockerfile
+├── step-functions/
+│   └── bulkrag-pipeline.asl.json
+└── terraform/
+    └── modules/
+        ├── ecs_extractor/          ← existente, sin cambios estructurales
+        ├── bulkrag_pipeline/       ← nuevo: Step Functions + Lambdas + IAM
+        │   ├── main.tf
+        │   ├── stepfunctions.tf
+        │   ├── lambdas.tf
+        │   ├── iam.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        └── bedrock_batch/          ← existente (de spec anterior), reutilizado
+```
+
+---
+
+## Convención de prefijos S3
+
+| Prefix | Contenido | Escritor | Lector |
+|---|---|---|---|
+| `tenant_anmat/`, `tenant_boletin/` | PDFs fuente | externo (ya existe) | ECS extractor |
+| `batch-poc/manifests/{tenant}/{run_id}/` | Manifests de extracción | Lambda `list_manifests` | ECS extractor |
+| `batch-poc/output/{tenant}/{run_id}/{key}.txt` | Texto extraído | ECS extractor | Lambda `consolidate_chunks` |
+| `batch-poc/logs/{tenant}/{run_id}/{key}.json` | Log por archivo | ECS extractor | auditoría |
+| `batch-poc/results/{tenant}/{run_id}/tanda_N_summary.json` | Summary por tanda | ECS extractor | Step Functions (info) |
+| `pending-embeddings/{tenant}/{run_id}/{key}.jsonl` | Chunks de 1 archivo, formato Bedrock | ECS extractor (chunking inline) | Lambda `consolidate_chunks` |
+| `embeddings-input/{tenant}/{run_id}/batch_{N}.jsonl` | JSONL consolidado, máx 50K records | Lambda `consolidate_chunks` | Bedrock Batch |
+| `embeddings-output/{tenant}/{run_id}/batch_{N}/` | Output de Bedrock Batch | Bedrock | Lambda `insert_pgvector` |
+| `pipeline-results/{run_id}/final_summary.json` | Resumen final del run | Lambda `insert_pgvector` | auditoría / dashboards |
+
+`run_id` = `{YYYYMMDD}-{uuid[:8]}`, generado en el primer step y propagado vía el input de la state machine.
+
+---
+
+## Decisión de diseño: dónde se hace el chunking
+
+**Se hace dentro del ECS extractor**, no en una Lambda separada disparada por evento S3. Razones:
+
+- El extractor ya tiene el texto completo en memoria tras `pdfplumber`; chunkearlo ahí evita una vuelta extra de descarga desde S3
+- Evita la necesidad de un trigger S3 por archivo `.txt` (que es justamente el patrón que generaría miles de invocaciones descontroladas)
+- El extractor ya escribe el `.txt` en `output/`; agregar la escritura del `.jsonl` en `pending-embeddings/` es la misma operación con un paso más
+
+El extractor entonces, por cada PDF, hace: `extraer texto → chunkear → escribir .txt en output/ → escribir .jsonl en pending-embeddings/`.
+
+---
+
+## Componente 1 — ECS Extractor (modificación)
+
+### Cambios sobre `ecs-extractor/extractor/main.py`
+
+Agregar lógica de chunking y generación de JSONL después de la extracción exitosa:
+
+```python
+"""
+Bulkrag ECS Extractor — Pipeline completo
+Extrae texto + chunkea + genera JSONL para batch embeddings.
+"""
+import os, json, time, traceback, io, uuid
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import boto3
+import pdfplumber
+
+BUCKET         = os.environ["RAG_BUCKET_NAME"]
+MANIFEST_KEY   = os.environ["MANIFEST_S3_KEY"]
+TENANT         = os.environ["TENANT"]
+RUN_ID         = os.environ["RUN_ID"]
+REGION         = os.environ.get("AWS_REGION", "us-east-1")
+WORKER_COUNT   = int(os.environ.get("WORKER_COUNT", "5"))
+MAX_FILE_MB    = int(os.environ.get("MAX_FILE_SIZE_MB", "30"))
+CHUNK_SIZE     = int(os.environ.get("CHUNK_SIZE_TOKENS", "500"))
+CHUNK_OVERLAP  = int(os.environ.get("CHUNK_OVERLAP_TOKENS", "50"))
+
+s3 = boto3.client("s3", region_name=REGION)
+
+
+def read_manifest() -> list[str]:
+    obj = s3.get_object(Bucket=BUCKET, Key=MANIFEST_KEY)
+    return json.loads(obj["Body"].read())["keys"]
+
+
+def chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]:
+    """
+    Chunking simple por palabras (aproximación de tokens).
+    Para producción evaluar tiktoken o el tokenizer de Cohere para precisión exacta.
+    """
+    words = text.split()
+    if not words:
+        return []
+    chunks, start = [], 0
+    step = max(chunk_size - overlap, 1)
+    while start < len(words):
+        chunk_words = words[start : start + chunk_size]
+        chunks.append(" ".join(chunk_words))
+        start += step
+    return chunks
+
+
+def process_pdf(pdf_key: str) -> dict:
+    """Procesa un PDF: extrae, chunkea, escribe output + jsonl. Retorna resultado."""
+    t0 = time.time()
+    try:
+        head = s3.head_object(Bucket=BUCKET, Key=pdf_key)
+        size_mb = head["ContentLength"] / (1024 * 1024)
+        if size_mb > MAX_FILE_MB:
+            return _result(pdf_key, "SKIPPED_TOO_LARGE", t0, size_mb=size_mb)
+
+        obj = s3.get_object(Bucket=BUCKET, Key=pdf_key)
+        pdf_bytes = obj["Body"].read()
+
+        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+            pages_text = [p.extract_text().strip() for p in pdf.pages if p.extract_text()]
+            full_text = "\n\n".join(pages_text)
+
+        if not full_text.strip():
+            return _result(pdf_key, "EMPTY_TEXT", t0, size_mb=size_mb)
+
+        # 1. Escribir .txt en output/ (mismo naming original)
+        output_key = f"batch-poc/output/{TENANT}/{RUN_ID}/{pdf_key}.txt"
+        s3.put_object(Bucket=BUCKET, Key=output_key, Body=full_text.encode("utf-8"))
+
+        # 2. Chunkear y escribir JSONL para embeddings batch
+        chunks = chunk_text(full_text, CHUNK_SIZE, CHUNK_OVERLAP)
+        jsonl_lines = []
+        for i, chunk in enumerate(chunks):
+            chunk_id = f"{pdf_key}::chunk_{i:04d}"
+            jsonl_lines.append(json.dumps({
+                "recordId": chunk_id,
+                "modelInput": {
+                    "texts":      [chunk],
+                    "input_type": "search_document"
+                },
+                # Metadata propia para mapear de vuelta en la inserción
+                "_meta": {
+                    "source_key": pdf_key,
+                    "chunk_index": i,
+                    "tenant": TENANT
+                }
+            }))
+
+        jsonl_key = f"pending-embeddings/{TENANT}/{RUN_ID}/{pdf_key}.jsonl"
+        s3.put_object(
+            Bucket=BUCKET,
+            Key=jsonl_key,
+            Body="\n".join(jsonl_lines).encode("utf-8")
+        )
+
+        return _result(pdf_key, "OK", t0, size_mb=size_mb, chunks=len(chunks))
+
+    except Exception:
+        return _result(pdf_key, "ERROR", t0, error=traceback.format_exc()[:500])
+
+
+def _result(key, status, t0, **extra) -> dict:
+    return {"key": key, "status": status, "duration_sec": round(time.time() - t0, 2), **extra}
+
+
+def write_log(result: dict) -> None:
+    log_key = f"batch-poc/logs/{TENANT}/{RUN_ID}/{result['key']}.json"
+    s3.put_object(Bucket=BUCKET, Key=log_key, Body=json.dumps(result).encode())
+
+
+def write_summary(results: list[dict]) -> None:
+    base = MANIFEST_KEY.split("/")[-1].replace(".json", "")
+    summary_key = f"batch-poc/results/{TENANT}/{RUN_ID}/{base}_summary.json"
+
+    by_status = {}
+    for r in results:
+        by_status[r["status"]] = by_status.get(r["status"], 0) + 1
+
+    total_chunks = sum(r.get("chunks", 0) for r in results)
+    total_sec    = sum(r["duration_sec"] for r in results)
+
+    summary = {
+        "manifest":     MANIFEST_KEY,
+        "tenant":       TENANT,
+        "run_id":       RUN_ID,
+        "total":        len(results),
+        "by_status":    by_status,
+        "total_chunks": total_chunks,
+        "total_sec":    round(total_sec, 2),
+        "avg_sec_file": round(total_sec / len(results), 2) if results else 0
+    }
+    s3.put_object(Bucket=BUCKET, Key=summary_key, Body=json.dumps(summary, indent=2).encode())
+    print(f"[SUMMARY] {json.dumps(by_status)} chunks={total_chunks} key={summary_key}")
+
+
+def main():
+    keys = read_manifest()
+    print(f"[START] tenant={TENANT} run_id={RUN_ID} files={len(keys)} workers={WORKER_COUNT}")
+
+    results = []
+    with ProcessPoolExecutor(max_workers=WORKER_COUNT) as executor:
+        futures = {executor.submit(process_pdf, k): k for k in keys}
+        for i, future in enumerate(as_completed(futures), 1):
+            result = future.result()
+            write_log(result)
+            results.append(result)
+            print(f"[{i}/{len(keys)}] {result['status']} {result['key']}")
+
+    write_summary(results)
+    print("[END]")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Variables de entorno nuevas (Task Definition)
+
+| Variable | Origen | Default |
+|---|---|---|
+| `TENANT` | Step Functions input | — |
+| `RUN_ID` | Step Functions input (generado en step 1) | — |
+| `WORKER_COUNT` | Task Definition fija | `5` |
+| `CHUNK_SIZE_TOKENS` | Task Definition fija | `500` |
+| `CHUNK_OVERLAP_TOKENS` | Task Definition fija | `50` |
+| `MAX_FILE_SIZE_MB` | Task Definition fija | `30` |
+
+---
+
+## Componente 2 — Lambda `bulkrag_list_manifests`
+
+```python
+"""
+Step 1 del pipeline: lista PDFs, genera run_id, particiona en manifests.
+Input (desde Step Functions):
+  { "tenant": "tenant_anmat", "prefix": "tenant_anmat/2024/", "files_per_manifest": 200 }
+Output:
+  { "run_id": "...", "tenant": "...", "manifest_keys": ["...", "..."] }
+"""
+import json, uuid, os
+from datetime import datetime
+import boto3
+
+BUCKET = os.environ["RAG_BUCKET_NAME"]
+s3 = boto3.client("s3")
+
+
+def list_pdf_keys(bucket: str, prefix: str) -> list[str]:
+    paginator = s3.get_paginator("list_objects_v2")
+    keys = []
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page.get("Contents", []):
+            if obj["Key"].lower().endswith(".pdf"):
+                keys.append(obj["Key"])
+    return keys
+
+
+def lambda_handler(event, context):
+    tenant     = event["tenant"]
+    prefix     = event["prefix"]
+    per_manifest = event.get("files_per_manifest", 200)
+
+    run_id = f"{datetime.now().strftime('%Y%m%d')}-{str(uuid.uuid4())[:8]}"
+
+    all_keys = list_pdf_keys(BUCKET, prefix)
+    if not all_keys:
+        raise ValueError(f"No se encontraron PDFs en s3://{BUCKET}/{prefix}")
+
+    manifest_keys = []
+    for i in range(0, len(all_keys), per_manifest):
+        batch = all_keys[i : i + per_manifest]
+        idx = i // per_manifest + 1
+        manifest_key = f"batch-poc/manifests/{tenant}/{run_id}/tanda_{idx}.json"
+        s3.put_object(
+            Bucket=BUCKET,
+            Key=manifest_key,
+            Body=json.dumps({"batch": idx, "total": len(batch), "keys": batch}).encode()
+        )
+        manifest_keys.append(manifest_key)
+
+    return {
+        "run_id":         run_id,
+        "tenant":         tenant,
+        "bucket":         BUCKET,
+        "total_files":    len(all_keys),
+        "manifest_keys":  manifest_keys
+    }
+```
+
+---
+
+## Componente 3 — Lambda `bulkrag_consolidate_chunks`
+
+```python
+"""
+Step 3 del pipeline: consolida todos los JSONL individuales (pending-embeddings/)
+en lotes de hasta 50,000 records, listos para Bedrock Batch.
+Dispara SOLO después de que el Map de extracción (step 2) completó al 100%.
+Input: { "run_id": "...", "tenant": "...", "bucket": "..." }
+Output: { "batch_input_keys": ["embeddings-input/.../batch_1.jsonl", ...] }
+"""
+import json, os
+import boto3
+
+MAX_RECORDS_PER_JOB = 50_000
+s3 = boto3.client("s3")
+
+
+def list_pending_jsonl(bucket: str, tenant: str, run_id: str) -> list[str]:
+    prefix = f"pending-embeddings/{tenant}/{run_id}/"
+    paginator = s3.get_paginator("list_objects_v2")
+    keys = []
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page.get("Contents", []):
+            keys.append(obj["Key"])
+    return keys
+
+
+def lambda_handler(event, context):
+    bucket = event["bucket"]
+    tenant = event["tenant"]
+    run_id = event["run_id"]
+
+    pending_keys = list_pending_jsonl(bucket, tenant, run_id)
+    if not pending_keys:
+        raise ValueError(f"No hay archivos pending-embeddings para run_id={run_id}")
+
+    all_records = []
+    for key in pending_keys:
+        obj = s3.get_object(Bucket=bucket, Key=key)
+        for line in obj["Body"].read().decode("utf-8").splitlines():
+            if line.strip():
+                all_records.append(line)
+
+    batch_input_keys = []
+    for i in range(0, len(all_records), MAX_RECORDS_PER_JOB):
+        batch_records = all_records[i : i + MAX_RECORDS_PER_JOB]
+        idx = i // MAX_RECORDS_PER_JOB + 1
+        batch_key = f"embeddings-input/{tenant}/{run_id}/batch_{idx}.jsonl"
+        s3.put_object(
+            Bucket=bucket,
+            Key=batch_key,
+            Body="\n".join(batch_records).encode("utf-8")
+        )
+        batch_input_keys.append(batch_key)
+
+    return {
+        "run_id":            run_id,
+        "tenant":             tenant,
+        "bucket":             bucket,
+        "total_chunks":       len(all_records),
+        "batch_input_keys":   batch_input_keys
+    }
+```
+
+---
+
+## Componente 4 — Lambda `bulkrag_insert_pgvector`
+
+```python
+"""
+Step 5 del pipeline: lee el output de Bedrock Batch y hace bulk insert/update
+en Aurora pgvector, mapeando recordId (pdf_key::chunk_index) → chunk en DB.
+Input: { "run_id": "...", "tenant": "...", "bucket": "...", "batch_output_prefix": "..." }
+"""
+import json, os
+import boto3
+
+AURORA_SECRET_ARN  = os.environ["AURORA_SECRET_ARN"]
+AURORA_CLUSTER_ARN = os.environ["AURORA_CLUSTER_ARN"]
+DB_NAME             = os.environ["DB_NAME"]
+
+s3   = boto3.client("s3")
+rds  = boto3.client("rds-data")  # Data API de Aurora Serverless
+
+
+def list_output_files(bucket: str, prefix: str) -> list[str]:
+    paginator = s3.get_paginator("list_objects_v2")
+    keys = []
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page.get("Contents", []):
+            if obj["Key"].endswith(".jsonl.out"):
+                keys.append(obj["Key"])
+    return keys
+
+
+def parse_record_id(record_id: str) -> tuple[str, int]:
+    # record_id format: "{pdf_key}::chunk_{0001}"
+    source_key, chunk_part = record_id.rsplit("::chunk_", 1)
+    return source_key, int(chunk_part)
+
+
+def bulk_upsert(rows: list[tuple]) -> int:
+    """
+    rows: [(source_key, chunk_index, embedding_vector), ...]
+    Usa Aurora Data API con batch-execute-statement.
+    Asume tabla `chunks` con columnas: source_key, chunk_index, embedding (vector), tenant.
+    """
+    sql = """
+        UPDATE chunks
+        SET embedding = :embedding::vector
+        WHERE source_key = :source_key AND chunk_index = :chunk_index
+    """
+    params_set = [
+        {
+            "parameters": [
+                {"name": "embedding",    "value": {"stringValue": json.dumps(emb)}},
+                {"name": "source_key",   "value": {"stringValue": src}},
+                {"name": "chunk_index",  "value": {"longValue": idx}}
+            ]
+        }
+        for src, idx, emb in rows
+    ]
+
+    # batch_execute_statement procesa en lotes; para volúmenes grandes, paginar de a 1000
+    updated = 0
+    for i in range(0, len(params_set), 1000):
+        chunk = params_set[i:i+1000]
+        rds.batch_execute_statement(
+            resourceArn=AURORA_CLUSTER_ARN,
+            secretArn=AURORA_SECRET_ARN,
+            database=DB_NAME,
+            sql=sql,
+            parameterSets=[p["parameters"] for p in chunk]
+        )
+        updated += len(chunk)
+    return updated
+
+
+def lambda_handler(event, context):
+    bucket  = event["bucket"]
+    tenant  = event["tenant"]
+    run_id  = event["run_id"]
+    prefix  = f"embeddings-output/{tenant}/{run_id}/"
+
+    output_files = list_output_files(bucket, prefix)
+    if not output_files:
+        raise ValueError(f"No se encontraron archivos de output en {prefix}")
+
+    rows = []
+    for key in output_files:
+        obj = s3.get_object(Bucket=bucket, Key=key)
+        for line in obj["Body"].read().decode("utf-8").splitlines():
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            source_key, chunk_idx = parse_record_id(record["recordId"])
+            embedding = record["modelOutput"]["embeddings"][0]
+            rows.append((source_key, chunk_idx, embedding))
+
+    total_updated = bulk_upsert(rows)
+
+    summary = {
+        "run_id": run_id,
+        "tenant": tenant,
+        "total_vectors_inserted": total_updated
+    }
+    s3.put_object(
+        Bucket=bucket,
+        Key=f"pipeline-results/{run_id}/final_summary.json",
+        Body=json.dumps(summary, indent=2).encode()
+    )
+
+    return summary
+```
+
+---
+
+## Componente 5 — Step Functions: definición ASL
+
+### `step-functions/bulkrag-pipeline.asl.json`
+
+```json
+{
+  "Comment": "Bulkrag — Pipeline completo de carga masiva RAG",
+  "StartAt": "ListPdfsAndBuildManifests",
+  "States": {
+    "ListPdfsAndBuildManifests": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${ListManifestsLambdaArn}",
+        "Payload.$": "$"
+      },
+      "ResultSelector": {
+        "run_id.$": "$.Payload.run_id",
+        "tenant.$": "$.Payload.tenant",
+        "bucket.$": "$.Payload.bucket",
+        "total_files.$": "$.Payload.total_files",
+        "manifest_keys.$": "$.Payload.manifest_keys"
+      },
+      "ResultPath": "$.listResult",
+      "Next": "RunExtractionTasks"
+    },
+
+    "RunExtractionTasks": {
+      "Type": "Map",
+      "ItemsPath": "$.listResult.manifest_keys",
+      "MaxConcurrency": 10,
+      "ItemSelector": {
+        "manifest_key.$": "$$.Map.Item.Value",
+        "tenant.$": "$.listResult.tenant",
+        "run_id.$": "$.listResult.run_id",
+        "bucket.$": "$.listResult.bucket"
+      },
+      "ItemProcessor": {
+        "ProcessorConfig": { "Mode": "INLINE" },
+        "StartAt": "RunEcsExtractionTask",
+        "States": {
+          "RunEcsExtractionTask": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::ecs:runTask.sync",
+            "Parameters": {
+              "Cluster": "${EcsClusterArn}",
+              "TaskDefinition": "${EcsTaskDefinitionArn}",
+              "LaunchType": "FARGATE",
+              "NetworkConfiguration": {
+                "AwsvpcConfiguration": {
+                  "Subnets": ${EcsSubnetIds},
+                  "SecurityGroups": ["${EcsSecurityGroupId}"],
+                  "AssignPublicIp": "ENABLED"
+                }
+              },
+              "Overrides": {
+                "ContainerOverrides": [
+                  {
+                    "Name": "extractor",
+                    "Environment": [
+                      { "Name": "MANIFEST_S3_KEY", "Value.$": "$.manifest_key" },
+                      { "Name": "TENANT",          "Value.$": "$.tenant" },
+                      { "Name": "RUN_ID",          "Value.$": "$.run_id" },
+                      { "Name": "RAG_BUCKET_NAME", "Value.$": "$.bucket" }
+                    ]
+                  }
+                ]
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": ["States.TaskFailed"],
+                "IntervalSeconds": 30,
+                "MaxAttempts": 2,
+                "BackoffRate": 2.0
+              }
+            ],
+            "End": true
+          }
+        }
+      },
+      "ResultPath": "$.extractionResults",
+      "Next": "ConsolidateChunks"
+    },
+
+    "ConsolidateChunks": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${ConsolidateChunksLambdaArn}",
+        "Payload": {
+          "bucket.$": "$.listResult.bucket",
+          "tenant.$": "$.listResult.tenant",
+          "run_id.$": "$.listResult.run_id"
+        }
+      },
+      "ResultSelector": {
+        "batch_input_keys.$": "$.Payload.batch_input_keys",
+        "total_chunks.$": "$.Payload.total_chunks"
+      },
+      "ResultPath": "$.consolidateResult",
+      "Next": "LaunchBedrockBatchJobs"
+    },
+
+    "LaunchBedrockBatchJobs": {
+      "Type": "Map",
+      "ItemsPath": "$.consolidateResult.batch_input_keys",
+      "MaxConcurrency": 5,
+      "ItemSelector": {
+        "input_key.$": "$$.Map.Item.Value",
+        "tenant.$": "$.listResult.tenant",
+        "run_id.$": "$.listResult.run_id",
+        "bucket.$": "$.listResult.bucket",
+        "batch_index.$": "$$.Map.Item.Index"
+      },
+      "ItemProcessor": {
+        "ProcessorConfig": { "Mode": "INLINE" },
+        "StartAt": "CreateModelInvocationJob",
+        "States": {
+          "CreateModelInvocationJob": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::bedrock:createModelInvocationJob.sync",
+            "Parameters": {
+              "JobName.$": "States.Format('bulkrag-{}-{}-batch{}', $.tenant, $.run_id, $.batch_index)",
+              "ModelId": "cohere.embed-multilingual-v3",
+              "RoleArn": "${BedrockBatchRoleArn}",
+              "InputDataConfig": {
+                "S3InputDataConfig": {
+                  "S3Uri.$": "States.Format('s3://{}/{}', $.bucket, $.input_key)",
+                  "S3InputFormat": "JSONL"
+                }
+              },
+              "OutputDataConfig": {
+                "S3OutputDataConfig": {
+                  "S3Uri.$": "States.Format('s3://{}/embeddings-output/{}/{}/batch_{}/', $.bucket, $.tenant, $.run_id, $.batch_index)"
+                }
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": ["Bedrock.ThrottlingException"],
+                "IntervalSeconds": 60,
+                "MaxAttempts": 3,
+                "BackoffRate": 2.0
+              }
+            ],
+            "End": true
+          }
+        }
+      },
+      "ResultPath": "$.bedrockResults",
+      "Next": "InsertVectorsToPgvector"
+    },
+
+    "InsertVectorsToPgvector": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${InsertPgvectorLambdaArn}",
+        "Payload": {
+          "bucket.$": "$.listResult.bucket",
+          "tenant.$": "$.listResult.tenant",
+          "run_id.$": "$.listResult.run_id"
+        }
+      },
+      "ResultPath": "$.finalResult",
+      "End": true
+    }
+  }
+}
+```
+
+### Notas sobre la integración `.sync`
+
+- **`ecs:runTask.sync`**: Step Functions espera nativamente a que la task ECS llegue a `STOPPED`. Si el container exit code es distinto de 0, la integración falla automáticamente y dispara el `Retry`.
+- **`bedrock:createModelInvocationJob.sync`**: requiere que el rol de ejecución de Step Functions tenga permisos para `bedrock:GetModelInvocationJob` (usado internamente por el polling administrado del servicio).
+- Los `Map` con `MaxConcurrency` controlan cuántas ECS Tasks o Bedrock Jobs corren en paralelo — ajustar según cuotas de cuenta.
+
+---
+
+## Componente 6 — Terraform: módulo `bulkrag_pipeline`
+
+### `terraform/modules/bulkrag_pipeline/variables.tf`
+
+```hcl
+variable "environment"              { type = string }
+variable "aws_account_id"           { type = string }
+variable "aws_region"               { type = string  default = "us-east-1" }
+variable "rag_bucket_name"          { type = string }
+variable "ecs_cluster_arn"          { type = string }
+variable "ecs_task_definition_arn"  { type = string }
+variable "ecs_subnet_ids"           { type = list(string) }
+variable "ecs_security_group_id"    { type = string }
+variable "bedrock_batch_role_arn"   { type = string }
+variable "aurora_secret_arn"        { type = string }
+variable "aurora_cluster_arn"       { type = string }
+variable "db_name"                  { type = string }
+```
+
+### `terraform/modules/bulkrag_pipeline/lambdas.tf`
+
+```hcl
+locals {
+  lambda_names = {
+    list_manifests      = "bulkrag_list_manifests"
+    consolidate_chunks  = "bulkrag_consolidate_chunks"
+    insert_pgvector     = "bulkrag_insert_pgvector"
+  }
+}
+
+resource "aws_lambda_function" "list_manifests" {
+  function_name = "${local.lambda_names.list_manifests}_${var.environment}"
+  role          = aws_iam_role.bulkrag_lambda_role.arn
+  handler       = "handler.lambda_handler"
+  runtime       = "python3.12"
+  timeout       = 300
+  memory_size   = 512
+  filename      = "${path.module}/../../../lambdas/bulkrag_list_manifests/dist/lambda.zip"
+  source_code_hash = filebase64sha256("${path.module}/../../../lambdas/bulkrag_list_manifests/dist/lambda.zip")
+
+  environment {
+    variables = { RAG_BUCKET_NAME = var.rag_bucket_name }
+  }
+}
+
+resource "aws_lambda_function" "consolidate_chunks" {
+  function_name = "${local.lambda_names.consolidate_chunks}_${var.environment}"
+  role          = aws_iam_role.bulkrag_lambda_role.arn
+  handler       = "handler.lambda_handler"
+  runtime       = "python3.12"
+  timeout       = 600
+  memory_size   = 1024
+  filename      = "${path.module}/../../../lambdas/bulkrag_consolidate_chunks/dist/lambda.zip"
+  source_code_hash = filebase64sha256("${path.module}/../../../lambdas/bulkrag_consolidate_chunks/dist/lambda.zip")
+
+  environment {
+    variables = { RAG_BUCKET_NAME = var.rag_bucket_name }
+  }
+}
+
+resource "aws_lambda_function" "insert_pgvector" {
+  function_name = "${local.lambda_names.insert_pgvector}_${var.environment}"
+  role          = aws_iam_role.bulkrag_lambda_role.arn
+  handler       = "handler.lambda_handler"
+  runtime       = "python3.12"
+  timeout       = 900
+  memory_size   = 1024
+  filename      = "${path.module}/../../../lambdas/bulkrag_insert_pgvector/dist/lambda.zip"
+  source_code_hash = filebase64sha256("${path.module}/../../../lambdas/bulkrag_insert_pgvector/dist/lambda.zip")
+
+  environment {
+    variables = {
+      RAG_BUCKET_NAME    = var.rag_bucket_name
+      AURORA_SECRET_ARN  = var.aurora_secret_arn
+      AURORA_CLUSTER_ARN = var.aurora_cluster_arn
+      DB_NAME            = var.db_name
+    }
+  }
+}
+```
+
+### `terraform/modules/bulkrag_pipeline/stepfunctions.tf`
+
+```hcl
+resource "aws_sfn_state_machine" "bulkrag_pipeline" {
+  name     = "bulkrag-pipeline-${var.environment}"
+  role_arn = aws_iam_role.step_functions_role.arn
+  type     = "STANDARD"  # ejecuciones largas (horas); EXPRESS tiene límite de 5 min
+
+  definition = templatefile("${path.module}/../../../step-functions/bulkrag-pipeline.asl.json", {
+    ListManifestsLambdaArn     = aws_lambda_function.list_manifests.arn
+    ConsolidateChunksLambdaArn = aws_lambda_function.consolidate_chunks.arn
+    InsertPgvectorLambdaArn    = aws_lambda_function.insert_pgvector.arn
+    EcsClusterArn              = var.ecs_cluster_arn
+    EcsTaskDefinitionArn       = var.ecs_task_definition_arn
+    EcsSubnetIds               = jsonencode(var.ecs_subnet_ids)
+    EcsSecurityGroupId         = var.ecs_security_group_id
+    BedrockBatchRoleArn        = var.bedrock_batch_role_arn
+  })
+
+  logging_configuration {
+    log_destination        = "${aws_cloudwatch_log_group.step_functions.arn}:*"
+    include_execution_data = true
+    level                   = "ALL"
+  }
+}
+
+resource "aws_cloudwatch_log_group" "step_functions" {
+  name              = "/aws/states/bulkrag-pipeline-${var.environment}"
+  retention_in_days = 30
+}
+```
+
+### `terraform/modules/bulkrag_pipeline/iam.tf`
+
+```hcl
+# ── Role de ejecución de las Lambdas ──────────────────────────────────────────
+resource "aws_iam_role" "bulkrag_lambda_role" {
+  name = "bulkrag-lambda-role-${var.environment}"
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Effect = "Allow"
+      Principal = { Service = "lambda.amazonaws.com" }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_basic" {
+  role       = aws_iam_role.bulkrag_lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy" "lambda_s3" {
+  name = "bulkrag-lambda-s3-policy"
+  role = aws_iam_role.bulkrag_lambda_role.id
+  policy = jsonencode({
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["s3:GetObject", "s3:PutObject", "s3:ListBucket"]
+      Resource = [
+        "arn:aws:s3:::${var.rag_bucket_name}",
+        "arn:aws:s3:::${var.rag_bucket_name}/*"
+      ]
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_rds_data" {
+  name = "bulkrag-lambda-rds-data-policy"
+  role = aws_iam_role.bulkrag_lambda_role.id
+  policy = jsonencode({
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["rds-data:BatchExecuteStatement", "rds-data:ExecuteStatement"]
+      Resource = var.aurora_cluster_arn
+    },
+    {
+      Effect   = "Allow"
+      Action   = ["secretsmanager:GetSecretValue"]
+      Resource = var.aurora_secret_arn
+    }]
+  })
+}
+
+# ── Role de Step Functions ────────────────────────────────────────────────────
+resource "aws_iam_role" "step_functions_role" {
+  name = "bulkrag-step-functions-role-${var.environment}"
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Effect = "Allow"
+      Principal = { Service = "states.amazonaws.com" }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "step_functions_permissions" {
+  name = "bulkrag-step-functions-policy"
+  role = aws_iam_role.step_functions_role.id
+  policy = jsonencode({
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["lambda:InvokeFunction"]
+        Resource = [
+          aws_lambda_function.list_manifests.arn,
+          aws_lambda_function.consolidate_chunks.arn,
+          aws_lambda_function.insert_pgvector.arn
+        ]
+      },
+      {
+        # Requerido para ecs:runTask.sync
+        Effect   = "Allow"
+        Action   = ["ecs:RunTask", "ecs:StopTask", "ecs:DescribeTasks"]
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["iam:PassRole"]
+        Resource = "*"
+        Condition = {
+          StringEquals = { "iam:PassedToService" = "ecs-tasks.amazonaws.com" }
+        }
+      },
+      {
+        # Requerido para que .sync reciba eventos de cambio de estado de ECS
+        Effect   = "Allow"
+        Action   = ["events:PutTargets", "events:PutRule", "events:DescribeRule"]
+        Resource = "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
+      },
+      {
+        # Requerido para bedrock:createModelInvocationJob.sync
+        Effect   = "Allow"
+        Action   = [
+          "bedrock:CreateModelInvocationJob",
+          "bedrock:GetModelInvocationJob",
+          "bedrock:StopModelInvocationJob"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["iam:PassRole"]
+        Resource = var.bedrock_batch_role_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = [
+          "events:PutTargets", "events:PutRule", "events:DescribeRule"
+        ]
+        Resource = "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForBedrockModelInvocationJobsRule"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["logs:CreateLogDelivery", "logs:GetLogDelivery", "logs:UpdateLogDelivery",
+                    "logs:DeleteLogDelivery", "logs:ListLogDeliveries", "logs:PutResourcePolicy",
+                    "logs:DescribeResourcePolicies", "logs:DescribeLogGroups"]
+        Resource = "*"
+      }
+    ]
+  })
+}
+```
+
+### `terraform/modules/bulkrag_pipeline/outputs.tf`
+
+```hcl
+output "state_machine_arn"  { value = aws_sfn_state_machine.bulkrag_pipeline.arn }
+output "state_machine_name" { value = aws_sfn_state_machine.bulkrag_pipeline.name }
+```
+
+---
+
+## Modificación al Componente ECS existente (`terraform/modules/ecs_extractor`)
+
+Agregar al `container_definitions` las variables de entorno faltantes (`TENANT`, `RUN_ID` se setean por override desde Step Functions, no en la Task Definition fija — mantener la definición base sin valores hardcodeados para esas dos):
+
+```hcl
+# En aws_ecs_task_definition.extractor — agregar a environment[]:
+{ name = "CHUNK_SIZE_TOKENS",    value = "500" },
+{ name = "CHUNK_OVERLAP_TOKENS", value = "50" }
+```
+
+`WORKER_COUNT` ya existe según `STEERING.md` (configurado en 5 según este pipeline). `MAX_FILE_SIZE_MB` ya existe (30).
+
+---
+
+## Ejecución del pipeline
+
+### Invocación manual (AWS CLI)
+
+```bash
+aws stepfunctions start-execution \
+  --state-machine-arn arn:aws:states:us-east-1:615216531593:stateMachine:bulkrag-pipeline-dev \
+  --name "anmat-run-$(date +%Y%m%d-%H%M%S)" \
+  --input '{
+    "tenant": "tenant_anmat",
+    "prefix": "tenant_anmat/2024/",
+    "files_per_manifest": 200
+  }' \
+  --profile asap_dev
+```
+
+### Monitoreo
+
+```bash
+aws stepfunctions describe-execution \
+  --execution-arn <arn-de-la-ejecucion> \
+  --profile asap_dev
+
+aws logs tail /aws/states/bulkrag-pipeline-dev --follow --profile asap_dev
+```
+
+---
+
+## Checklist de validación end-to-end
+
+- [ ] State machine se crea correctamente en consola Step Functions
+- [ ] Ejecución de prueba con `files_per_manifest: 10` y prefix de pocos archivos
+- [ ] Step 1: manifests aparecen en `batch-poc/manifests/{tenant}/{run_id}/`
+- [ ] Step 2: ECS Tasks se lanzan en paralelo, consola Step Functions muestra Map en progreso
+- [ ] Step 2: `.txt` y `.jsonl` aparecen en `output/` y `pending-embeddings/` respectivamente
+- [ ] Step 2 completa al 100% antes de avanzar a Step 3 (verificar en el gráfico de ejecución)
+- [ ] Step 3: JSONL consolidado aparece en `embeddings-input/{tenant}/{run_id}/batch_1.jsonl`
+- [ ] Step 4: Bedrock Batch Job aparece en consola Bedrock con status `InProgress` → `Completed`
+- [ ] Step 4 espera la finalización real del job (no retorna prematuramente)
+- [ ] Step 5: `pgvector` tiene los embeddings actualizados (`SELECT COUNT(*) FROM chunks WHERE embedding IS NOT NULL`)
+- [ ] `pipeline-results/{run_id}/final_summary.json` refleja el conteo correcto
+
+---
+
+## Trade-offs y consideraciones
+
+| Aspecto | Detalle |
+|---|---|
+| **Standard vs Express Step Functions** | Se usa `STANDARD` porque la ejecución puede durar horas (extracción + batch embeddings). Express tiene límite de 5 minutos y no aplica. |
+| **Costo de Step Functions** | Standard cobra por transición de estado (~$0.025 / 1000 transiciones). Para 261K archivos con manifests de 200, son ~1300 transiciones del Map — costo despreciable (<$1). |
+| **Chunking simple por palabras** | El chunker usa split por palabras como aproximación de tokens. Para precisión exacta con el tokenizer de Cohere, evaluar incorporar `cohere` SDK localmente o `tiktoken` como aproximación más fiel. |
+| **Aurora Data API requerida** | El Lambda de inserción usa `rds-data` (Data API), que requiere que el cluster Aurora tenga Data API habilitada. Si el cluster usa conexión directa (psycopg2/VPC), reemplazar por conexión directa con Lambda en la VPC correspondiente. |
+| **Fallo parcial en el Map de extracción** | Si una ECS Task falla tras los reintentos, todo el Map falla y el pipeline no avanza a consolidación. Para tolerancia a fallos parciales, considerar `ToleratedFailurePercentage` en el Map (Step Functions lo soporta nativamente). |
+| **Recordkeeping de `_meta`** | El campo `_meta` en el JSONL no es parte del estándar de Bedrock Batch — Bedrock lo ignora pero lo preserva en el output únicamente si el modelo lo retorna; en la práctica, el mapeo de vuelta depende del `recordId`, no de `_meta`. Mantener `_meta` solo como referencia humana en los logs, no como mecanismo de mapeo. |
+
+---
+
+## Pendientes fuera de alcance de esta spec
+
+- OCR para `EMPTY_TEXT` y `SKIPPED_TOO_LARGE` (Textract o Tesseract) — rama separada según roadmap de `STEERING.md`
+- Fargate Spot para reducir costo de extracción (~70%) — pendiente de validar estabilidad con `.sync` y posibles interrupciones
+- `ToleratedFailurePercentage` en los Maps para tolerancia a fallos parciales
+- Dashboard de monitoreo (CloudWatch o QuickSight) sobre `pipeline-results/*/final_summary.json`

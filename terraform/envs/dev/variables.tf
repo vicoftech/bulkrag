@@ -66,3 +66,23 @@ variable "terraform_state_bucket" {
 variable "terraform_state_lock_table" {
   type = string
 }
+
+variable "skip_db_insert" {
+  type    = bool
+  default = true
+}
+
+variable "aurora_cluster_arn" {
+  type    = string
+  default = ""
+}
+
+variable "aurora_secret_arn" {
+  type    = string
+  default = ""
+}
+
+variable "db_name" {
+  type    = string
+  default = ""
+}
