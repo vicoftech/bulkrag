@@ -28,3 +28,4 @@ build_lambda bulkrag_list_manifests
 build_lambda bulkrag_consolidate_chunks
 build_lambda bulkrag_insert_pgvector
 build_lambda bulkrag_run_bedrock_batch
+build_lambda bulkrag_generate_report

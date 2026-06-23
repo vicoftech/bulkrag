@@ -4,6 +4,7 @@ locals {
     consolidate_chunks  = "bulkrag_consolidate_chunks"
     insert_pgvector     = "bulkrag_insert_pgvector"
     run_bedrock_batch   = "bulkrag_run_bedrock_batch"
+    generate_report     = "bulkrag_generate_report"
   }
 }
 
@@ -64,6 +65,24 @@ resource "aws_lambda_function" "insert_pgvector" {
       RAG_BUCKET_NAME   = var.rag_bucket_name
       AURORA_SECRET_ARN = local.aurora_secret_arn
       SKIP_DB_INSERT    = local.db_insert_disabled ? "true" : "false"
+    }
+  }
+}
+
+resource "aws_lambda_function" "generate_report" {
+  function_name    = "${local.lambda_names.generate_report}_${var.environment}"
+  role             = aws_iam_role.bulkrag_lambda_role.arn
+  handler          = "handler.lambda_handler"
+  runtime          = "python3.12"
+  timeout          = 300
+  memory_size      = 512
+  filename         = "${path.module}/../../../lambdas/bulkrag_generate_report/dist/lambda.zip"
+  source_code_hash = filebase64sha256("${path.module}/../../../lambdas/bulkrag_generate_report/dist/lambda.zip")
+
+  environment {
+    variables = {
+      RAG_BUCKET_NAME        = var.rag_bucket_name
+      BEDROCK_EMBED_MODEL_ID = var.bedrock_embed_model_id
     }
   }
 }

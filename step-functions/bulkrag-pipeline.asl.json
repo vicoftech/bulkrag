@@ -153,6 +153,24 @@
         }
       },
       "ResultPath": "$.finalResult",
+      "Next": "GenerateHtmlReport"
+    },
+
+    "GenerateHtmlReport": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${GenerateReportLambdaArn}",
+        "Payload": {
+          "bucket.$": "$.listResult.bucket",
+          "tenant.$": "$.listResult.tenant",
+          "run_id.$": "$.listResult.run_id",
+          "total_files.$": "$.listResult.total_files",
+          "execution_arn.$": "$$.Execution.Id",
+          "insert_result.$": "$.finalResult"
+        }
+      },
+      "ResultPath": "$.reportResult",
       "End": true
     }
   }

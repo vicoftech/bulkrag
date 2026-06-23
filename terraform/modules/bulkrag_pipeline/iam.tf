@@ -51,6 +51,19 @@ resource "aws_iam_role_policy" "lambda_secrets" {
   })
 }
 
+resource "aws_iam_role_policy" "lambda_sfn" {
+  name = "bulkrag-lambda-sfn-policy"
+  role = aws_iam_role.bulkrag_lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["states:DescribeExecution"]
+      Resource = "arn:aws:states:${var.aws_region}:${var.aws_account_id}:execution:bulkrag-pipeline-${var.environment}:*"
+    }]
+  })
+}
+
 resource "aws_iam_role_policy" "lambda_bedrock" {
   name = "bulkrag-lambda-bedrock-policy"
   role = aws_iam_role.bulkrag_lambda_role.id
@@ -110,7 +123,8 @@ resource "aws_iam_role_policy" "step_functions_permissions" {
           aws_lambda_function.list_manifests.arn,
           aws_lambda_function.consolidate_chunks.arn,
           aws_lambda_function.insert_pgvector.arn,
-          aws_lambda_function.run_bedrock_batch.arn
+          aws_lambda_function.run_bedrock_batch.arn,
+          aws_lambda_function.generate_report.arn
         ]
       },
       {
@@ -188,6 +202,14 @@ resource "aws_lambda_permission" "run_bedrock_batch_sfn" {
   statement_id  = "AllowExecutionFromStepFunctions"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.run_bedrock_batch.function_name
+  principal     = "states.amazonaws.com"
+  source_arn    = aws_sfn_state_machine.bulkrag_pipeline.arn
+}
+
+resource "aws_lambda_permission" "generate_report_sfn" {
+  statement_id  = "AllowExecutionFromStepFunctions"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.generate_report.function_name
   principal     = "states.amazonaws.com"
   source_arn    = aws_sfn_state_machine.bulkrag_pipeline.arn
 }

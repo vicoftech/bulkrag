@@ -69,7 +69,10 @@ def _invoke_sync_embeddings(bucket: str, input_key: str, output_uri: str) -> dic
     }
 
 
-def _run_batch_job(job_name: str, input_uri: str, output_uri: str) -> dict:
+ACTIVE_BATCH_STATUSES = ("Submitted", "Validating", "Scheduled", "InProgress")
+
+
+def _run_batch_job(job_name: str, input_uri: str, output_uri: str, deadline: float) -> dict:
     response = bedrock.create_model_invocation_job(
         jobName=job_name,
         modelId=MODEL_ID,
@@ -79,9 +82,8 @@ def _run_batch_job(job_name: str, input_uri: str, output_uri: str) -> dict:
     )
     job_arn = response["jobArn"]
 
-    deadline = time.time() + MAX_WAIT_SEC
-    status = "InProgress"
-    while status in ("Submitted", "InProgress", "Validating") and time.time() < deadline:
+    status = "Submitted"
+    while status in ACTIVE_BATCH_STATUSES and time.time() < deadline:
         time.sleep(POLL_INTERVAL_SEC)
         job = bedrock.get_model_invocation_job(jobIdentifier=job_arn)
         status = job["status"]
@@ -107,6 +109,9 @@ def lambda_handler(event, context):
     input_key = event["input_key"]
     batch_index = event.get("batch_index", 0)
 
+    remaining_ms = getattr(context, "get_remaining_time_in_millis", lambda: MAX_WAIT_SEC * 1000)()
+    deadline = time.time() + min(MAX_WAIT_SEC, remaining_ms / 1000 - 30)
+
     job_name = _job_name(tenant, run_id, batch_index)
     input_uri = f"s3://{bucket}/{input_key}"
     output_uri = f"s3://{bucket}/embeddings-output/{tenant}/{run_id}/batch_{batch_index}/"
@@ -119,7 +124,7 @@ def lambda_handler(event, context):
         )
     else:
         try:
-            result = _run_batch_job(job_name, input_uri, output_uri)
+            result = _run_batch_job(job_name, input_uri, output_uri, deadline)
         except bedrock.exceptions.ValidationException as exc:
             if "Batch inference is not supported" not in str(exc):
                 raise

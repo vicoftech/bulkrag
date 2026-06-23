@@ -13,6 +13,7 @@ resource "aws_sfn_state_machine" "bulkrag_pipeline" {
     ConsolidateChunksLambdaArn = aws_lambda_function.consolidate_chunks.arn
     InsertPgvectorLambdaArn    = aws_lambda_function.insert_pgvector.arn
     RunBedrockBatchLambdaArn   = aws_lambda_function.run_bedrock_batch.arn
+    GenerateReportLambdaArn    = aws_lambda_function.generate_report.arn
     EcsClusterArn              = var.ecs_cluster_arn
     EcsTaskDefinitionArn       = var.ecs_task_definition_arn
     EcsSubnetIds               = jsonencode(var.ecs_subnet_ids)
